@@ -21,8 +21,8 @@ $rustIntermediateDir = Join-Path $runRoot "rust-staging"
 $rustCargoTargetDir = Join-Path $runRoot "rust-target"
 $logPath = Join-Path $runRoot "publish.log"
 $summaryPath = Join-Path $runRoot "summary.json"
-$project = Join-Path $repoRoot "src\DeskBox\DeskBox.csproj"
-$updaterProject = Join-Path $repoRoot "src\DeskBox.Updater\DeskBox.Updater.csproj"
+$project = Join-Path $repoRoot "src\DeskBoxWhite\DeskBoxWhite.csproj"
+$updaterProject = Join-Path $repoRoot "src\DeskBoxWhite.Updater\DeskBoxWhite.Updater.csproj"
 $toolchainScript = Join-Path $PSScriptRoot "rust-arm64-msvc-environment.ps1"
 $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
@@ -49,7 +49,7 @@ function Copy-WindowsAppRuntimeInsightsResource {
     )
 
     if (-not (Test-Path -LiteralPath $AssetsPath -PathType Leaf)) {
-        throw "The restored DeskBox assets file is missing: '$AssetsPath'."
+        throw "The restored DeskBoxWhite assets file is missing: '$AssetsPath'."
     }
 
     $assets = Get-Content -LiteralPath $AssetsPath -Raw | ConvertFrom-Json
@@ -246,7 +246,7 @@ else {
     }
     $candidate
 }
-$toolchain = Get-DeskBoxMsvcEnvironment -Platform $Platform
+$toolchain = Get-DeskBoxWhiteMsvcEnvironment -Platform $Platform
 $sourceSnapshotBefore = Get-WorkingTreeSnapshot
 
 Assert-PathInsideRoot -Root $artifactRoot -Candidate $runRoot
@@ -259,12 +259,12 @@ New-Item -ItemType Directory -Path $symbolsDir -Force | Out-Null
 $commonProperties = @(
     "-p:Platform=$Platform",
     "-p:RuntimeIdentifier=$runtimeIdentifier",
-    "-p:DeskBoxDistribution=Direct",
-    "-p:DeskBoxAotAudit=true",
-    "-p:DeskBoxAotSmokeHarness=false",
+    "-p:DeskBoxWhiteDistribution=Direct",
+    "-p:DeskBoxWhiteAotAudit=true",
+    "-p:DeskBoxWhiteAotSmokeHarness=false",
     "-p:PublishAot=true",
-    "-p:DeskBoxRustNative=true",
-    "-p:DeskBoxRustCrtLinkage=Static",
+    "-p:DeskBoxWhiteRustNative=true",
+    "-p:DeskBoxWhiteRustCrtLinkage=Static",
     "-p:JsonSerializerIsReflectionEnabledByDefault=false",
     "-p:IlcUseEnvironmentalTools=true",
     "-p:SelfContained=true",
@@ -273,7 +273,7 @@ $commonProperties = @(
 
 $previousCliLanguage = [Environment]::GetEnvironmentVariable("DOTNET_CLI_UI_LANGUAGE", "Process")
 $previousNoLogo = [Environment]::GetEnvironmentVariable("DOTNET_NOLOGO", "Process")
-$environmentState = Enter-DeskBoxMsvcEnvironment -Toolchain $toolchain
+$environmentState = Enter-DeskBoxWhiteMsvcEnvironment -Toolchain $toolchain
 try {
     [Environment]::SetEnvironmentVariable("DOTNET_CLI_UI_LANGUAGE", "en-US", "Process")
     [Environment]::SetEnvironmentVariable("DOTNET_NOLOGO", "1", "Process")
@@ -298,8 +298,8 @@ try {
         "--output", $publishDir,
         "--artifacts-path", $buildArtifactsDir,
         "--no-restore",
-        "-p:DeskBoxRustNativeIntermediateDir=$rustIntermediateDir",
-        "-p:DeskBoxRustNativeCargoTargetDir=$rustCargoTargetDir",
+        "-p:DeskBoxWhiteRustNativeIntermediateDir=$rustIntermediateDir",
+        "-p:DeskBoxWhiteRustNativeCargoTargetDir=$rustCargoTargetDir",
         "-p:PublishSingleFile=false",
         "-v:minimal"
     ) + $commonProperties
@@ -311,12 +311,12 @@ try {
 finally {
     [Environment]::SetEnvironmentVariable("DOTNET_CLI_UI_LANGUAGE", $previousCliLanguage, "Process")
     [Environment]::SetEnvironmentVariable("DOTNET_NOLOGO", $previousNoLogo, "Process")
-    Exit-DeskBoxMsvcEnvironment -State $environmentState
+    Exit-DeskBoxWhiteMsvcEnvironment -State $environmentState
 }
 
-$deskBoxProjectAssetsPath = Join-Path $buildArtifactsDir "obj\DeskBox\project.assets.json"
+$deskBoxWhiteProjectAssetsPath = Join-Path $buildArtifactsDir "obj\DeskBoxWhite\project.assets.json"
 $windowsAppRuntimeInsightsResource = Copy-WindowsAppRuntimeInsightsResource `
-    -AssetsPath $deskBoxProjectAssetsPath `
+    -AssetsPath $deskBoxWhiteProjectAssetsPath `
     -NativePlatform ($runtimeIdentifier.Substring(4)) `
     -DestinationDirectory $publishDir
 
@@ -325,8 +325,8 @@ $nativeValidation = & (Join-Path $PSScriptRoot "build-rust-native.ps1") `
     -Configuration Release `
     -OutputDirectory $publishDir `
     -ValidateOnly
-$nativeStagingPath = Join-Path $rustIntermediateDir "deskbox_native.dll"
-$nativePublishPath = Join-Path $publishDir "deskbox_native.dll"
+$nativeStagingPath = Join-Path $rustIntermediateDir "deskboxwhite_native.dll"
+$nativePublishPath = Join-Path $publishDir "deskboxwhite_native.dll"
 foreach ($requiredPath in @(
         $nativeStagingPath,
         $nativePublishPath)) {
@@ -349,7 +349,7 @@ foreach ($pdb in $pdbFiles) {
     Move-Item -LiteralPath $pdb.FullName -Destination $destination -Force
 }
 
-$installManifestName = "DeskBox.InstallManifest.txt"
+$installManifestName = "DeskBoxWhite.InstallManifest.txt"
 $installManifestPath = Join-Path $publishDir $installManifestName
 $installManifestEntries = [System.Collections.Generic.List[string]]::new()
 foreach ($publishedFile in Get-ChildItem -LiteralPath $publishDir -File -Recurse) {
@@ -371,11 +371,11 @@ $installManifestEntries = @($installManifestEntries | Sort-Object -Unique)
     [System.Text.UTF8Encoding]::new($false))
 
 $requiredFiles = @(
-    "DeskBox.exe",
-    "DeskBox.Updater.exe",
-    "DeskBox.ThumbnailProxy.exe",
-    "DeskBox.pri",
-    "deskbox_native.dll",
+    "DeskBoxWhite.exe",
+    "DeskBoxWhite.Updater.exe",
+    "DeskBoxWhite.ThumbnailProxy.exe",
+    "DeskBoxWhite.pri",
+    "deskboxwhite_native.dll",
     "EverythingSdk.dll",
     "Microsoft.UI.Input.dll",
     "Microsoft.ui.xaml.dll",
@@ -392,10 +392,10 @@ foreach ($requiredFile in $requiredFiles) {
 
 $symbolFiles = @(Get-ChildItem -LiteralPath $symbolsDir -File -Recurse)
 foreach ($requiredSymbolFile in @(
-        "DeskBox.pdb",
-        "DeskBox.Updater.pdb",
-        "DeskBox.ThumbnailProxy.pdb",
-        "deskbox_native.pdb")) {
+        "DeskBoxWhite.pdb",
+        "DeskBoxWhite.Updater.pdb",
+        "DeskBoxWhite.ThumbnailProxy.pdb",
+        "deskboxwhite_native.pdb")) {
     if (-not ($symbolFiles | Where-Object Name -eq $requiredSymbolFile)) {
         throw "AOT retail symbols are missing '$requiredSymbolFile'."
     }
@@ -408,12 +408,12 @@ $forbiddenNames = @(
     "hostfxr.dll",
     "hostpolicy.dll",
     "System.Private.CoreLib.dll",
-    "DeskBox.dll",
-    "DeskBox.deps.json",
-    "DeskBox.runtimeconfig.json",
-    "DeskBox.Updater.dll",
-    "DeskBox.Updater.deps.json",
-    "DeskBox.Updater.runtimeconfig.json"
+    "DeskBoxWhite.dll",
+    "DeskBoxWhite.deps.json",
+    "DeskBoxWhite.runtimeconfig.json",
+    "DeskBoxWhite.Updater.dll",
+    "DeskBoxWhite.Updater.deps.json",
+    "DeskBoxWhite.Updater.runtimeconfig.json"
 )
 $forbiddenFiles = @($publishedFiles | Where-Object { $_.Name -in $forbiddenNames -or $_.Extension -eq ".pdb" })
 if ($forbiddenFiles.Count -gt 0) {
@@ -422,10 +422,10 @@ if ($forbiddenFiles.Count -gt 0) {
 
 $peResults = @(
     foreach ($fileName in @(
-            "DeskBox.exe",
-            "DeskBox.Updater.exe",
-            "DeskBox.ThumbnailProxy.exe",
-            "deskbox_native.dll",
+            "DeskBoxWhite.exe",
+            "DeskBoxWhite.Updater.exe",
+            "DeskBoxWhite.ThumbnailProxy.exe",
+            "deskboxwhite_native.dll",
             "EverythingSdk.dll",
             "Microsoft.WindowsAppRuntime.Insights.Resource.dll")) {
         $path = Join-Path $publishDir $fileName
@@ -443,20 +443,20 @@ $peResults = @(
 )
 
 $smokeHarnessTokens = @(
-    "DESKBOX_AOT_SHORTCUT_SMOKE",
-    "DESKBOX_AOT_SHELL_SMOKE",
-    "DESKBOX_AOT_QUICK_ACCESS_MUTATION_SMOKE",
-    "DESKBOX_AOT_MUSIC_VOLUME_READ_SMOKE",
-    "DESKBOX_AOT_MUSIC_VOLUME_MUTATION_SMOKE",
-    "DESKBOX_AOT_MUSIC_VOLUME_SESSION_MUTATION_SMOKE",
-    "DESKBOX_AOT_MANAGED_UI_SMOKE",
-    "DESKBOX_AOT_HOTKEY_SMOKE",
-    "DESKBOX_AOT_TODO_RECURRENCE_REMINDER_SMOKE",
-    "DESKBOX_AOT_TODO_NOTIFICATION_SMOKE",
-    "DESKBOX_AOT_TODO_NOTIFICATION_ACTIVATION_SMOKE",
-    "DESKBOX_AOT_TODO_NOTIFICATION_FORWARDING_SMOKE",
-    "DESKBOX_AOT_TODO_NOTIFICATION_SURFACE_SMOKE",
-    "DESKBOX_AOT_TODO_NOTIFICATION_USER_CLICK_SMOKE",
+    "DESKBOXWHITE_AOT_SHORTCUT_SMOKE",
+    "DESKBOXWHITE_AOT_SHELL_SMOKE",
+    "DESKBOXWHITE_AOT_QUICK_ACCESS_MUTATION_SMOKE",
+    "DESKBOXWHITE_AOT_MUSIC_VOLUME_READ_SMOKE",
+    "DESKBOXWHITE_AOT_MUSIC_VOLUME_MUTATION_SMOKE",
+    "DESKBOXWHITE_AOT_MUSIC_VOLUME_SESSION_MUTATION_SMOKE",
+    "DESKBOXWHITE_AOT_MANAGED_UI_SMOKE",
+    "DESKBOXWHITE_AOT_HOTKEY_SMOKE",
+    "DESKBOXWHITE_AOT_TODO_RECURRENCE_REMINDER_SMOKE",
+    "DESKBOXWHITE_AOT_TODO_NOTIFICATION_SMOKE",
+    "DESKBOXWHITE_AOT_TODO_NOTIFICATION_ACTIVATION_SMOKE",
+    "DESKBOXWHITE_AOT_TODO_NOTIFICATION_FORWARDING_SMOKE",
+    "DESKBOXWHITE_AOT_TODO_NOTIFICATION_SURFACE_SMOKE",
+    "DESKBOXWHITE_AOT_TODO_NOTIFICATION_USER_CLICK_SMOKE",
     "AotManagedUiSmokeResult",
     "AotWeatherSurfaceFixture",
     "AotShellMoveFixture",
@@ -464,7 +464,7 @@ $smokeHarnessTokens = @(
 )
 $smokeHarnessMatches = @(
     Find-BinaryTextTokens `
-        -Path (Join-Path $publishDir "DeskBox.exe") `
+        -Path (Join-Path $publishDir "DeskBoxWhite.exe") `
         -Tokens $smokeHarnessTokens
 )
 if ($smokeHarnessMatches.Count -gt 0) {

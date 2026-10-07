@@ -1,15 +1,15 @@
 # 文件拖出原件保护
 
-用户报告 DeskBox 1.5.5 文件拖到微信后找不到，回收站也没有。缺少该用户的诊断包、原路径和复现步骤，具体删除或移动原因尚未确认。用户确定的最高要求是文件不能丢失。
+用户报告 DeskBoxWhite 1.5.5 文件拖到微信后找不到，回收站也没有。缺少该用户的诊断包、原路径和复现步骤，具体删除或移动原因尚未确认。用户确定的最高要求是文件不能丢失。
 
-本文件原记录 2026-09-29 第一批"全部 Copy-only"止血实现。2026-09-30 起，源端改造为 `StartDragAsync` 发起 + 对外公告的最终形态（方案 B）：允许集与默认偏好解耦，且不依赖 DeskBox 事后核验删除。公告形状按 OS 分档（2026-10-01 二次修复定稿，见文末 Win10 专项清单）：**Win11 公告 `Copy | Move` + 偏好档位**（FollowWindows 无偏好走原生卷规则，同卷移动/跨卷复制、修饰键生效）；**Win10 公告集整体收单比特**（FollowWindows/Move 档=仅 `Move`，Copy 档=仅 `Copy`，即 1.5.5 已验证不弹菜单的形态），preferred 偏好在 Win10 无意义（到达不了 brokered drag）保持 `None`。第三批"复制+核验+回收"实验已整体移除。
+本文件原记录 2026-09-29 第一批"全部 Copy-only"止血实现。2026-09-30 起，源端改造为 `StartDragAsync` 发起 + 对外公告的最终形态（方案 B）：允许集与默认偏好解耦，且不依赖 DeskBoxWhite 事后核验删除。公告形状按 OS 分档（2026-10-01 二次修复定稿，见文末 Win10 专项清单）：**Win11 公告 `Copy | Move` + 偏好档位**（FollowWindows 无偏好走原生卷规则，同卷移动/跨卷复制、修饰键生效）；**Win10 公告集整体收单比特**（FollowWindows/Move 档=仅 `Move`，Copy 档=仅 `Copy`，即 1.5.5 已验证不弹菜单的形态），preferred 偏好在 Win10 无意义（到达不了 brokered drag）保持 `None`。第三批"复制+核验+回收"实验已整体移除。
 
 ## 当前实现
 
 - `FileItemDragPackage` 在 `DragStarting` 决定公告与偏好（两者均按 OS 分档，`ResolveDragOutAllowedOperations` / `ResolveDragOutPreferredOperation`，OS 开关可注入供测试）：**Win11** 公告 `AllowedOperations = Copy | Move`，偏好来自拖出三档设置——`FollowWindows`（默认）解析为 `None` 不给偏好（目标走原生卷规则），`Move`/`Copy` 写单值偏好；**Win10** 公告集收单比特（`FollowWindows`/`Move`→仅 `Move`、`Copy`→仅 `Copy`），偏好恒 `None`——Win10 shell 对**多于一个公告效果**的 brokered 拖放每次落放都弹复制/移动菜单且 preferred 到不了它，单效果公告是唯一静默形态（1.5.5 出货即此形状）。由容器级 `CanDrag`（`UIElement.StartDragAsync`）发起，`ListViewBase.CanDragItems` 已关闭。已知代价：Win10 的 Move/FollowWindows 档会被 copy-only 接收端（VS Code、Chromium、WinForms）拒收——设置页在 Win10 显示说明行（`Settings.DragOutAction.Win10Note`）。
 - 原生 Shell 载荷始终经过 `FileDragSourceGuardDataObject`：Preferred DropEffect 只在写入值为单一位（Copy/Move/Link）时由包装层存储并回答（内层对象不接受该格式写入）；`DROPEFFECT_NONE(0)` 与多位掩码是引擎的"无偏好"拼法，包装层保持该格式不存在——与从不写偏好的 Shell 原生源完全一致，规避"格式存在但值为 0"在 Win10/第三方目标上的歧义解释；后续写入不可服务值也会清掉先前的有效偏好。Performed DropEffect、Logical Performed DropEffect、Paste Succeeded、TargetCLSID 等完成回执被消费且只记录日志，永不抵达内层 Shell 对象。正确处理 `fRelease` 的存储介质所有权。
-- DeskBox 不根据 `DropResult` 或任何回执删除源文件。目标按公告的 `Move` 自行完成移动（Explorer 的原生移动语义）时，撤销语义是"撤销移动"，文件回到原处。
-- DeskBox 内部文件传输使用私有文件载荷确定逻辑意图；跨格、文件夹、叠放导入继续遵循 Ctrl/Shift 和既有移动策略。传输许可和拖放回执分开：内部路由反馈 `Copy`/`Link`，完成永不返回 `Move`。
+- DeskBoxWhite 不根据 `DropResult` 或任何回执删除源文件。目标按公告的 `Move` 自行完成移动（Explorer 的原生移动语义）时，撤销语义是"撤销移动"，文件回到原处。
+- DeskBoxWhite 内部文件传输使用私有文件载荷确定逻辑意图；跨格、文件夹、叠放导入继续遵循 Ctrl/Shift 和既有移动策略。传输许可和拖放回执分开：内部路由反馈 `Copy`/`Link`，完成永不返回 `Move`。
 - 便签和待办附件继续建立关联，对内部文件拖拽使用 `Copy` 回执。
 - 外部完成处理只按成功目录枚举和存在性复查刷新列表（`ObserveExternalDragOutAsync`）；`missingOrUnavailable` 不是删除成功证明，也不触发自动补删或恢复。
 - 外部拖出完成后登记桌面到达豁免（`SuppressDraggedArrivals`），防止桌面自动整理把刚落桌面的文件收回格子；待决条目寿命 = 当前整理延迟档位 + 60min 落地余量（覆盖 ≥5min 档位下的延迟物化），指纹条目额外给 60min settle 余量；登记时同时记录 `(2)`/`(3)` 等冲突改名候选；待决条目要求"创建于登记后、登记后落盘或源已消失"的到达证据，且证据不足时保留条目重试；同路径跨操作的声明取更强语义（指纹 > 待决）而非盲覆盖；豁免随恢复存储持久化，重启不丢（`LedgerPath`）。
@@ -17,7 +17,7 @@
 ## 明确的体验变化与边界
 
 - 拖到桌面/Explorer：Win11 与资源管理器一致的原生移动——同卷改名、跨卷复制、Ctrl/Shift/冲突对话框/Ctrl+Z 全部系统原生。Win10 因公告集收单比特：Move/FollowWindows 档落放即移动（**跨卷也是移动**=copy+删源，等价资源管理器跨卷移动语义；且 copy-only 接收端会拒收该拖放）；想要复制须把设置档切到"复制"（公告集变 Copy），in-drag Ctrl 在 Move-only 公告下救不回。
-- 拖到微信等第三方：看到与从资源管理器拖出相同的允许集；即使对方误报 `Move`，DeskBox 也不删源。残余风险是接收方主动修改或删除原路径——与从资源管理器拖出同等，DeskBox 无法也不应额外防护。
+- 拖到微信等第三方：看到与从资源管理器拖出相同的允许集；即使对方误报 `Move`，DeskBoxWhite 也不删源。残余风险是接收方主动修改或删除原路径——与从资源管理器拖出同等，DeskBoxWhite 无法也不应额外防护。
 - `Link` 不对外公告（XAML 把 `Copy|Move|Link` 全选当无偏好）；Alt 拖出创建快捷方式与任务栏固定暂不支持，需要时可用 `Microsoft.UI.Input.DragDrop.DragOperation` 自发起补齐。
 - 源文件真实路径仍通过 CF_HDROP 交给目标；不把原件设为只读、不复制大文件到 UI 线程、不复活中途接管 DoDragDrop 的旧实验（`NativeFileDragOut` 已删除）。
 

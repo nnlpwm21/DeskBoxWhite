@@ -1,4 +1,4 @@
-function Get-DeskBoxPeUInt16 {
+function Get-DeskBoxWhitePeUInt16 {
     param(
         [Parameter(Mandatory)]
         [byte[]]$Bytes,
@@ -14,7 +14,7 @@ function Get-DeskBoxPeUInt16 {
     return [System.BitConverter]::ToUInt16($Bytes, $Offset)
 }
 
-function Get-DeskBoxPeUInt32 {
+function Get-DeskBoxWhitePeUInt32 {
     param(
         [Parameter(Mandatory)]
         [byte[]]$Bytes,
@@ -30,7 +30,7 @@ function Get-DeskBoxPeUInt32 {
     return [System.BitConverter]::ToUInt32($Bytes, $Offset)
 }
 
-function Convert-DeskBoxPeRvaToOffset {
+function Convert-DeskBoxWhitePeRvaToOffset {
     param(
         [Parameter(Mandatory)]
         [uint32]$Rva,
@@ -73,7 +73,7 @@ function Convert-DeskBoxPeRvaToOffset {
     throw "PE RVA 0x$($Rva.ToString('X8')) does not map to a file section."
 }
 
-function Get-DeskBoxPeAsciiString {
+function Get-DeskBoxWhitePeAsciiString {
     param(
         [Parameter(Mandatory)]
         [byte[]]$Bytes,
@@ -99,7 +99,7 @@ function Get-DeskBoxPeAsciiString {
     return [System.Text.Encoding]::ASCII.GetString($Bytes, $Offset, $end - $Offset)
 }
 
-function Get-DeskBoxNativePeContract {
+function Get-DeskBoxWhiteNativePeContract {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
@@ -120,22 +120,22 @@ function Get-DeskBoxNativePeContract {
 
     [byte[]]$bytes = [System.IO.File]::ReadAllBytes($fullPath)
     if ($bytes.Length -lt 0x40 -or
-        (Get-DeskBoxPeUInt16 -Bytes $bytes -Offset 0) -ne 0x5A4D) {
+        (Get-DeskBoxWhitePeUInt16 -Bytes $bytes -Offset 0) -ne 0x5A4D) {
         throw "'$fullPath' is not a DOS/PE image."
     }
 
-    [int]$peOffset = [int](Get-DeskBoxPeUInt32 -Bytes $bytes -Offset 0x3C)
-    if ((Get-DeskBoxPeUInt32 -Bytes $bytes -Offset $peOffset) -ne 0x00004550) {
+    [int]$peOffset = [int](Get-DeskBoxWhitePeUInt32 -Bytes $bytes -Offset 0x3C)
+    if ((Get-DeskBoxWhitePeUInt32 -Bytes $bytes -Offset $peOffset) -ne 0x00004550) {
         throw "'$fullPath' does not contain a valid PE signature."
     }
 
     $coffOffset = $peOffset + 4
-    [uint16]$machine = Get-DeskBoxPeUInt16 -Bytes $bytes -Offset $coffOffset
-    [uint16]$sectionCount = Get-DeskBoxPeUInt16 -Bytes $bytes -Offset ($coffOffset + 2)
+    [uint16]$machine = Get-DeskBoxWhitePeUInt16 -Bytes $bytes -Offset $coffOffset
+    [uint16]$sectionCount = Get-DeskBoxWhitePeUInt16 -Bytes $bytes -Offset ($coffOffset + 2)
     [uint16]$optionalHeaderSize =
-        Get-DeskBoxPeUInt16 -Bytes $bytes -Offset ($coffOffset + 16)
+        Get-DeskBoxWhitePeUInt16 -Bytes $bytes -Offset ($coffOffset + 16)
     $optionalOffset = $coffOffset + 20
-    [uint16]$optionalMagic = Get-DeskBoxPeUInt16 -Bytes $bytes -Offset $optionalOffset
+    [uint16]$optionalMagic = Get-DeskBoxWhitePeUInt16 -Bytes $bytes -Offset $optionalOffset
     if ($optionalMagic -ne 0x20B) {
         throw "'$fullPath' is not a PE32+ module."
     }
@@ -146,17 +146,17 @@ function Get-DeskBoxNativePeContract {
     }
 
     [uint32]$sizeOfHeaders =
-        Get-DeskBoxPeUInt32 -Bytes $bytes -Offset ($optionalOffset + 60)
+        Get-DeskBoxWhitePeUInt32 -Bytes $bytes -Offset ($optionalOffset + 60)
     [uint32]$sizeOfImage =
-        Get-DeskBoxPeUInt32 -Bytes $bytes -Offset ($optionalOffset + 56)
+        Get-DeskBoxWhitePeUInt32 -Bytes $bytes -Offset ($optionalOffset + 56)
     [uint32]$numberOfRvaAndSizes =
-        Get-DeskBoxPeUInt32 -Bytes $bytes -Offset ($optionalOffset + 108)
+        Get-DeskBoxWhitePeUInt32 -Bytes $bytes -Offset ($optionalOffset + 108)
     if ($numberOfRvaAndSizes -lt 1) {
         throw "'$fullPath' has no PE export data directory."
     }
 
-    [uint32]$exportRva = Get-DeskBoxPeUInt32 -Bytes $bytes -Offset ($optionalOffset + 112)
-    [uint32]$exportSize = Get-DeskBoxPeUInt32 -Bytes $bytes -Offset ($optionalOffset + 116)
+    [uint32]$exportRva = Get-DeskBoxWhitePeUInt32 -Bytes $bytes -Offset ($optionalOffset + 112)
+    [uint32]$exportSize = Get-DeskBoxWhitePeUInt32 -Bytes $bytes -Offset ($optionalOffset + 116)
     if ($exportRva -eq 0 -or $exportSize -lt 40) {
         throw "'$fullPath' has no PE export table."
     }
@@ -166,20 +166,20 @@ function Get-DeskBoxNativePeContract {
         for ($index = 0; $index -lt $sectionCount; $index++) {
             $sectionOffset = $sectionTableOffset + ($index * 40)
             [pscustomobject]@{
-                VirtualSize = Get-DeskBoxPeUInt32 -Bytes $bytes -Offset ($sectionOffset + 8)
-                VirtualAddress = Get-DeskBoxPeUInt32 -Bytes $bytes -Offset ($sectionOffset + 12)
-                SizeOfRawData = Get-DeskBoxPeUInt32 -Bytes $bytes -Offset ($sectionOffset + 16)
-                PointerToRawData = Get-DeskBoxPeUInt32 -Bytes $bytes -Offset ($sectionOffset + 20)
+                VirtualSize = Get-DeskBoxWhitePeUInt32 -Bytes $bytes -Offset ($sectionOffset + 8)
+                VirtualAddress = Get-DeskBoxWhitePeUInt32 -Bytes $bytes -Offset ($sectionOffset + 12)
+                SizeOfRawData = Get-DeskBoxWhitePeUInt32 -Bytes $bytes -Offset ($sectionOffset + 16)
+                PointerToRawData = Get-DeskBoxWhitePeUInt32 -Bytes $bytes -Offset ($sectionOffset + 20)
             }
         }
     )
 
     $imports = @()
     if ($numberOfRvaAndSizes -ge 2) {
-        [uint32]$importRva = Get-DeskBoxPeUInt32 -Bytes $bytes -Offset ($optionalOffset + 120)
-        [uint32]$importSize = Get-DeskBoxPeUInt32 -Bytes $bytes -Offset ($optionalOffset + 124)
+        [uint32]$importRva = Get-DeskBoxWhitePeUInt32 -Bytes $bytes -Offset ($optionalOffset + 120)
+        [uint32]$importSize = Get-DeskBoxWhitePeUInt32 -Bytes $bytes -Offset ($optionalOffset + 124)
         if ($importRva -ne 0 -and $importSize -ge 20) {
-            $importOffset = Convert-DeskBoxPeRvaToOffset `
+            $importOffset = Convert-DeskBoxWhitePeRvaToOffset `
                 -Rva $importRva `
                 -Sections $sections `
                 -SizeOfHeaders $sizeOfHeaders `
@@ -189,15 +189,15 @@ function Get-DeskBoxNativePeContract {
                 for ($descriptorIndex = 0; $descriptorIndex -lt 4096; $descriptorIndex++) {
                     $descriptorOffset = $importOffset + ($descriptorIndex * 20)
                     [uint32]$originalFirstThunk =
-                        Get-DeskBoxPeUInt32 -Bytes $bytes -Offset $descriptorOffset
+                        Get-DeskBoxWhitePeUInt32 -Bytes $bytes -Offset $descriptorOffset
                     [uint32]$timeDateStamp =
-                        Get-DeskBoxPeUInt32 -Bytes $bytes -Offset ($descriptorOffset + 4)
+                        Get-DeskBoxWhitePeUInt32 -Bytes $bytes -Offset ($descriptorOffset + 4)
                     [uint32]$forwarderChain =
-                        Get-DeskBoxPeUInt32 -Bytes $bytes -Offset ($descriptorOffset + 8)
+                        Get-DeskBoxWhitePeUInt32 -Bytes $bytes -Offset ($descriptorOffset + 8)
                     [uint32]$nameRva =
-                        Get-DeskBoxPeUInt32 -Bytes $bytes -Offset ($descriptorOffset + 12)
+                        Get-DeskBoxWhitePeUInt32 -Bytes $bytes -Offset ($descriptorOffset + 12)
                     [uint32]$firstThunk =
-                        Get-DeskBoxPeUInt32 -Bytes $bytes -Offset ($descriptorOffset + 16)
+                        Get-DeskBoxWhitePeUInt32 -Bytes $bytes -Offset ($descriptorOffset + 16)
                     if ($originalFirstThunk -eq 0 -and
                         $timeDateStamp -eq 0 -and
                         $forwarderChain -eq 0 -and
@@ -210,12 +210,12 @@ function Get-DeskBoxNativePeContract {
                         throw "'$fullPath' contains an import descriptor without a module name."
                     }
 
-                    $nameOffset = Convert-DeskBoxPeRvaToOffset `
+                    $nameOffset = Convert-DeskBoxWhitePeRvaToOffset `
                         -Rva $nameRva `
                         -Sections $sections `
                         -SizeOfHeaders $sizeOfHeaders `
                         -FileLength $bytes.Length
-                    Get-DeskBoxPeAsciiString -Bytes $bytes -Offset $nameOffset
+                    Get-DeskBoxWhitePeAsciiString -Bytes $bytes -Offset $nameOffset
                 }
             ) | Sort-Object -Unique
             if (-not $terminated) {
@@ -224,18 +224,18 @@ function Get-DeskBoxNativePeContract {
         }
     }
 
-    $exportOffset = Convert-DeskBoxPeRvaToOffset `
+    $exportOffset = Convert-DeskBoxWhitePeRvaToOffset `
         -Rva $exportRva `
         -Sections $sections `
         -SizeOfHeaders $sizeOfHeaders `
         -FileLength $bytes.Length
-    [uint32]$nameCount = Get-DeskBoxPeUInt32 -Bytes $bytes -Offset ($exportOffset + 24)
-    [uint32]$namesRva = Get-DeskBoxPeUInt32 -Bytes $bytes -Offset ($exportOffset + 32)
+    [uint32]$nameCount = Get-DeskBoxWhitePeUInt32 -Bytes $bytes -Offset ($exportOffset + 24)
+    [uint32]$namesRva = Get-DeskBoxWhitePeUInt32 -Bytes $bytes -Offset ($exportOffset + 32)
     if ($nameCount -gt 65536) {
         throw "'$fullPath' exposes an unreasonable PE export-name count: $nameCount."
     }
 
-    $namesOffset = Convert-DeskBoxPeRvaToOffset `
+    $namesOffset = Convert-DeskBoxWhitePeRvaToOffset `
         -Rva $namesRva `
         -Sections $sections `
         -SizeOfHeaders $sizeOfHeaders `
@@ -243,13 +243,13 @@ function Get-DeskBoxNativePeContract {
     $exports = @(
         for ([uint32]$index = 0; $index -lt $nameCount; $index++) {
             [uint32]$nameRva =
-                Get-DeskBoxPeUInt32 -Bytes $bytes -Offset ($namesOffset + ([int]$index * 4))
-            $nameOffset = Convert-DeskBoxPeRvaToOffset `
+                Get-DeskBoxWhitePeUInt32 -Bytes $bytes -Offset ($namesOffset + ([int]$index * 4))
+            $nameOffset = Convert-DeskBoxWhitePeRvaToOffset `
                 -Rva $nameRva `
                 -Sections $sections `
                 -SizeOfHeaders $sizeOfHeaders `
                 -FileLength $bytes.Length
-            Get-DeskBoxPeAsciiString -Bytes $bytes -Offset $nameOffset
+            Get-DeskBoxWhitePeAsciiString -Bytes $bytes -Offset $nameOffset
         }
     ) | Sort-Object -Unique
 

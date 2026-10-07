@@ -12,11 +12,11 @@ $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
 $scenario = "PickerClipboardStorageItemsPersistenceRestart"
-$smokeEnvironmentVariable = "DESKBOX_AOT_MANAGED_UI_SMOKE"
+$smokeEnvironmentVariable = "DESKBOXWHITE_AOT_MANAGED_UI_SMOKE"
 $phaseEnvironmentVariable =
-    "DESKBOX_AOT_MANAGED_UI_PICKER_CLIPBOARD_PHASE"
+    "DESKBOXWHITE_AOT_MANAGED_UI_PICKER_CLIPBOARD_PHASE"
 $runIdEnvironmentVariable =
-    "DESKBOX_AOT_MANAGED_UI_PICKER_CLIPBOARD_RUN_ID"
+    "DESKBOXWHITE_AOT_MANAGED_UI_PICKER_CLIPBOARD_RUN_ID"
 $runId = [Guid]::NewGuid().ToString("N")
 $repoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot ".."))
 $launcher = Join-Path $PSScriptRoot "start-aot-preview.ps1"
@@ -33,9 +33,9 @@ $evidenceRoot = Join-Path `
     $repoRoot `
     ".artifacts\aot-managed-ui-smoke\win-x64"
 $productionDataRoot = [System.IO.Path]::GetFullPath(
-    (Join-Path $env:LOCALAPPDATA "DeskBox"))
-$ownedMarkerName = ".deskbox-aot-managed-ui-owned.json"
-$ownedMarkerKind = "DeskBox.Aot.PickerClipboardSmoke.v1"
+    (Join-Path $env:LOCALAPPDATA "DeskBoxWhite"))
+$ownedMarkerName = ".deskboxwhite-aot-managed-ui-owned.json"
+$ownedMarkerKind = "DeskBoxWhite.Aot.PickerClipboardSmoke.v1"
 
 function Test-PathEqual {
     param([string]$Left, [string]$Right)
@@ -103,7 +103,7 @@ function Get-DirectoryStateFingerprint {
 function Get-ExactPreviewProcesses {
     param([string]$ExecutablePath)
     return @(
-        Get-CimInstance Win32_Process -Filter "Name='DeskBox.exe'" |
+        Get-CimInstance Win32_Process -Filter "Name='DeskBoxWhite.exe'" |
             Where-Object {
                 -not [string]::IsNullOrWhiteSpace(
                     [string]$_.ExecutablePath) -and
@@ -200,7 +200,7 @@ function Wait-PickerAutomationWindow {
     $deadline = [DateTime]::UtcNow.AddSeconds($Seconds)
     while ([DateTime]::UtcNow -lt $deadline) {
         [IntPtr]$windowHandle =
-            [DeskBoxPickerWindowNative]::FindVisibleDialog($ProcessId)
+            [DeskBoxWhitePickerWindowNative]::FindVisibleDialog($ProcessId)
         if ($windowHandle -ne [IntPtr]::Zero) {
             try {
                 $window =
@@ -260,7 +260,7 @@ function Invoke-AutomationElement {
     [IntPtr]$windowHandle =
         [IntPtr][long]$Element.Current.NativeWindowHandle
     if ($windowHandle -ne [IntPtr]::Zero -and
-        [DeskBoxPickerWindowNative]::ClickButton($windowHandle)) {
+        [DeskBoxWhitePickerWindowNative]::ClickButton($windowHandle)) {
         return "BM_CLICK"
     }
 
@@ -283,7 +283,7 @@ function Set-AutomationElementValue {
     [IntPtr]$windowHandle =
         [IntPtr][long]$Element.Current.NativeWindowHandle
     if ($windowHandle -ne [IntPtr]::Zero -and
-        [DeskBoxPickerWindowNative]::SetWindowText($windowHandle, $Value)) {
+        [DeskBoxWhitePickerWindowNative]::SetWindowText($windowHandle, $Value)) {
         return "WM_SETTEXT"
     }
 
@@ -487,30 +487,30 @@ function Invoke-PickerClipboardPhase {
         $DataRoot `
         "aot-managed-ui-smoke\picker-clipboard-storage-items-persistence-restart\$phaseDirectory\result.json"
     $variables = @(
-        "DESKBOX_AOT_MANAGED_UI_SMOKE",
-        "DESKBOX_AOT_MANAGED_UI_PERSISTENCE_PHASE",
-        "DESKBOX_AOT_MANAGED_UI_QUICK_CAPTURE_PHASE",
-        "DESKBOX_AOT_MANAGED_UI_TODO_PHASE",
-        "DESKBOX_AOT_MANAGED_UI_TODO_STEPS_PHASE",
-        "DESKBOX_AOT_MANAGED_UI_TODO_ATTACHMENTS_PHASE",
-        "DESKBOX_AOT_MANAGED_UI_GLANCE_PHASE",
-        "DESKBOX_AOT_MANAGED_UI_GLANCE_FIXTURE",
-        "DESKBOX_AOT_MANAGED_UI_WEATHER_SETTINGS_PHASE",
-        "DESKBOX_AOT_MANAGED_UI_WEATHER_SURFACE_PHASE",
-        "DESKBOX_AOT_MANAGED_UI_LOCAL_FILE_PHASE",
-        "DESKBOX_AOT_MANAGED_UI_RECYCLE_BIN_PHASE",
-        "DESKBOX_AOT_MANAGED_UI_RECYCLE_BIN_RUN_ID",
-        "DESKBOX_AOT_MANAGED_UI_SHELL_MOVE_PHASE",
-        "DESKBOX_AOT_MANAGED_UI_SHELL_MOVE_RUN_ID",
-        "DESKBOX_AOT_MANAGED_UI_FILE_PROPERTIES_RUN_ID",
+        "DESKBOXWHITE_AOT_MANAGED_UI_SMOKE",
+        "DESKBOXWHITE_AOT_MANAGED_UI_PERSISTENCE_PHASE",
+        "DESKBOXWHITE_AOT_MANAGED_UI_QUICK_CAPTURE_PHASE",
+        "DESKBOXWHITE_AOT_MANAGED_UI_TODO_PHASE",
+        "DESKBOXWHITE_AOT_MANAGED_UI_TODO_STEPS_PHASE",
+        "DESKBOXWHITE_AOT_MANAGED_UI_TODO_ATTACHMENTS_PHASE",
+        "DESKBOXWHITE_AOT_MANAGED_UI_GLANCE_PHASE",
+        "DESKBOXWHITE_AOT_MANAGED_UI_GLANCE_FIXTURE",
+        "DESKBOXWHITE_AOT_MANAGED_UI_WEATHER_SETTINGS_PHASE",
+        "DESKBOXWHITE_AOT_MANAGED_UI_WEATHER_SURFACE_PHASE",
+        "DESKBOXWHITE_AOT_MANAGED_UI_LOCAL_FILE_PHASE",
+        "DESKBOXWHITE_AOT_MANAGED_UI_RECYCLE_BIN_PHASE",
+        "DESKBOXWHITE_AOT_MANAGED_UI_RECYCLE_BIN_RUN_ID",
+        "DESKBOXWHITE_AOT_MANAGED_UI_SHELL_MOVE_PHASE",
+        "DESKBOXWHITE_AOT_MANAGED_UI_SHELL_MOVE_RUN_ID",
+        "DESKBOXWHITE_AOT_MANAGED_UI_FILE_PROPERTIES_RUN_ID",
         $phaseEnvironmentVariable,
         $runIdEnvironmentVariable,
-        "DESKBOX_AOT_MUSIC_VOLUME_SESSION_MUTATION_SMOKE",
-        "DESKBOX_AOT_MUSIC_VOLUME_MUTATION_SMOKE",
-        "DESKBOX_AOT_MUSIC_VOLUME_READ_SMOKE",
-        "DESKBOX_AOT_QUICK_ACCESS_MUTATION_SMOKE",
-        "DESKBOX_AOT_SHELL_SMOKE",
-        "DESKBOX_AOT_SHORTCUT_SMOKE")
+        "DESKBOXWHITE_AOT_MUSIC_VOLUME_SESSION_MUTATION_SMOKE",
+        "DESKBOXWHITE_AOT_MUSIC_VOLUME_MUTATION_SMOKE",
+        "DESKBOXWHITE_AOT_MUSIC_VOLUME_READ_SMOKE",
+        "DESKBOXWHITE_AOT_QUICK_ACCESS_MUTATION_SMOKE",
+        "DESKBOXWHITE_AOT_SHELL_SMOKE",
+        "DESKBOXWHITE_AOT_SHORTCUT_SMOKE")
     $previous = @{}
     foreach ($variable in $variables) {
         $previous[$variable] = [Environment]::GetEnvironmentVariable(
@@ -617,7 +617,7 @@ function Invoke-PickerClipboardPhase {
         }
     }
 
-    $runtimeLogPath = Join-Path $DataRoot "DeskBox.log"
+    $runtimeLogPath = Join-Path $DataRoot "DeskBoxWhite.log"
     $failureLines = @(
         Get-Content -LiteralPath $runtimeLogPath |
             Where-Object {
@@ -653,7 +653,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
-public static class DeskBoxPickerWindowNative
+public static class DeskBoxWhitePickerWindowNative
 {
     private const uint BmClick = 0x00F5;
     private const uint WmSetText = 0x000C;
@@ -931,7 +931,7 @@ $settings | ConvertTo-Json -Depth 16 |
 
 $productionBefore = Get-DirectoryStateFingerprint -Path $productionDataRoot
 $previewExecutablePath = [System.IO.Path]::GetFullPath(
-    (Join-Path ([string]$auditSummary.publishDirectory) "DeskBox.exe"))
+    (Join-Path ([string]$auditSummary.publishDirectory) "DeskBoxWhite.exe"))
 $runSucceeded = $false
 $previewRootCleaned = $false
 $recoveryRootCleaned = $false
@@ -993,7 +993,7 @@ try {
             -Destination (Join-Path $phaseArchive "result.json")
         Copy-Item `
             -LiteralPath ([string]$phase.runtimeLogPath) `
-            -Destination (Join-Path $phaseArchive "DeskBox.log")
+            -Destination (Join-Path $phaseArchive "DeskBoxWhite.log")
         @($phase.automation) | ConvertTo-Json -Depth 12 |
             Set-Content `
                 -LiteralPath (Join-Path $phaseArchive "picker-automation.json") `

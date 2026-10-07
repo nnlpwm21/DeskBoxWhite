@@ -1,8 +1,8 @@
 [workspace]
 members = [
-    "deskbox-native",
-    "deskbox-audio-session-fixture",
-    "deskbox-thumbnail-proxy",
+    "deskboxwhite-native",
+    "deskboxwhite-audio-session-fixture",
+    "deskboxwhite-thumbnail-proxy",
 ]
 resolver = "3"
 

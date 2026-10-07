@@ -1,4 +1,4 @@
-# DeskBox Current Architecture
+# DeskBoxWhite Current Architecture
 
 Foundation overview: 2026-07-20. Maintenance entry updated: 2026-09-23.
 
@@ -67,7 +67,7 @@ per-batch record lives in
   (update card) stay on the shell by the batch-50 verdict: host-lifeline
   sections whose writers are services the Features layer must not reference.
 - P/Invoke. Non-Platform declarations are a hard zero since batch 31: all 270
-  declarations live under `src/DeskBox/Platform`.
+  declarations live under `src/DeskBoxWhite/Platform`.
 - AppSettings. Re-qualified by batch 51 as a frozen on-disk wire contract:
   the 220 passthroughs are pure disk-schema mapping and cannot be deleted,
   slice-direct serialization cannot stay byte-equivalent, and runtime
@@ -89,7 +89,7 @@ This document describes the current architecture after the 1.2.0 widget foundati
 
 ## Current Goal
 
-DeskBox is moving toward a reusable widget foundation without forcing every existing widget into the same implementation immediately.
+DeskBoxWhite is moving toward a reusable widget foundation without forcing every existing widget into the same implementation immediately.
 
 The current rule is:
 
@@ -138,14 +138,14 @@ Use this path for future content-type widgets whenever possible.
 
 Core widget foundation:
 
-- `src/DeskBox/Models/WidgetKind.cs`
-- `src/DeskBox/Models/WidgetConfig.cs`
-- `src/DeskBox/Services/WidgetRegistry.cs`
-- `src/DeskBox/Services/WidgetContentDescriptor.cs`
-- `src/DeskBox/Services/WidgetContentFactory.cs`
-- `src/DeskBox/Services/IWidgetContentProvider.cs`
-- `src/DeskBox/Services/ContentWidgetWindowFactory.cs`
-- `src/DeskBox/Services/WidgetManager.cs`
+- `src/DeskBoxWhite/Models/WidgetKind.cs`
+- `src/DeskBoxWhite/Models/WidgetConfig.cs`
+- `src/DeskBoxWhite/Services/WidgetRegistry.cs`
+- `src/DeskBoxWhite/Services/WidgetContentDescriptor.cs`
+- `src/DeskBoxWhite/Services/WidgetContentFactory.cs`
+- `src/DeskBoxWhite/Services/IWidgetContentProvider.cs`
+- `src/DeskBoxWhite/Services/ContentWidgetWindowFactory.cs`
+- `src/DeskBoxWhite/Services/WidgetManager.cs`
 
 Window creation routing:
 
@@ -155,49 +155,49 @@ Window creation routing:
 
 Shared shell and window helpers:
 
-- `src/DeskBox/Controls/WidgetShell.xaml`
-- `src/DeskBox/Controls/WidgetShell.xaml.cs`
-- `src/DeskBox/Controls/WidgetShellContentHost.cs`
-- `src/DeskBox/Services/WidgetTrayAnimationController.cs`
-- `src/DeskBox/Services/WidgetTitleBarMetrics.cs`
-- `src/DeskBox/Services/WidgetSessionManager.cs`
+- `src/DeskBoxWhite/Controls/WidgetShell.xaml`
+- `src/DeskBoxWhite/Controls/WidgetShell.xaml.cs`
+- `src/DeskBoxWhite/Controls/WidgetShellContentHost.cs`
+- `src/DeskBoxWhite/Services/WidgetTrayAnimationController.cs`
+- `src/DeskBoxWhite/Services/WidgetTitleBarMetrics.cs`
+- `src/DeskBoxWhite/Services/WidgetSessionManager.cs`
 
 Current windows:
 
-- `src/DeskBox/Views/QuickCaptureWidgetWindow.xaml.cs`: QuickCapture / note widget.
-- `src/DeskBox/Views/ContentWidgetWindow.xaml.cs`: File, Todo, Music, Weather, Search, and future content widgets.
+- `src/DeskBoxWhite/Views/QuickCaptureWidgetWindow.xaml.cs`: QuickCapture / note widget.
+- `src/DeskBoxWhite/Views/ContentWidgetWindow.xaml.cs`: File, Todo, Music, Weather, Search, and future content widgets.
 
 Current Todo implementation:
 
-- `src/DeskBox/Controls/WidgetContents/TodoWidgetContent.xaml`
-- `src/DeskBox/Controls/WidgetContents/TodoWidgetContent.xaml.cs`
-- `src/DeskBox/Controls/WidgetContents/TodoWidgetContentAdapter.cs`
-- `src/DeskBox/ViewModels/TodoWidgetViewModel.cs`
-- `src/DeskBox/Services/TodoWidgetStore.cs`
-- `src/DeskBox/Services/TodoWidgetContentProvider.cs`
+- `src/DeskBoxWhite/Controls/WidgetContents/TodoWidgetContent.xaml`
+- `src/DeskBoxWhite/Controls/WidgetContents/TodoWidgetContent.xaml.cs`
+- `src/DeskBoxWhite/Controls/WidgetContents/TodoWidgetContentAdapter.cs`
+- `src/DeskBoxWhite/ViewModels/TodoWidgetViewModel.cs`
+- `src/DeskBoxWhite/Services/TodoWidgetStore.cs`
+- `src/DeskBoxWhite/Services/TodoWidgetContentProvider.cs`
 
 Current Music implementation:
 
-- `src/DeskBox/Controls/WidgetContents/MusicWidgetContent.xaml`
-- `src/DeskBox/Controls/WidgetContents/MusicWidgetContent.xaml.cs`
-- `src/DeskBox/Controls/WidgetContents/MusicWidgetContentAdapter.cs`
-- `src/DeskBox/ViewModels/MusicWidgetViewModel.cs`
-- `src/DeskBox/ViewModels/MusicBarViewModel.cs`
-- `src/DeskBox/Services/MusicSessionService.cs`
-- `src/DeskBox/Services/MusicVolumeService.cs`
-- `src/DeskBox/Services/MusicWidgetContentProvider.cs`
+- `src/DeskBoxWhite/Controls/WidgetContents/MusicWidgetContent.xaml`
+- `src/DeskBoxWhite/Controls/WidgetContents/MusicWidgetContent.xaml.cs`
+- `src/DeskBoxWhite/Controls/WidgetContents/MusicWidgetContentAdapter.cs`
+- `src/DeskBoxWhite/ViewModels/MusicWidgetViewModel.cs`
+- `src/DeskBoxWhite/ViewModels/MusicBarViewModel.cs`
+- `src/DeskBoxWhite/Services/MusicSessionService.cs`
+- `src/DeskBoxWhite/Services/MusicVolumeService.cs`
+- `src/DeskBoxWhite/Services/MusicWidgetContentProvider.cs`
 
 Current Weather implementation:
 
-- `src/DeskBox/Controls/WidgetContents/WeatherWidgetContent.xaml`
-- `src/DeskBox/Controls/WidgetContents/WeatherWidgetContent.xaml.cs`
-- `src/DeskBox/Controls/WidgetContents/WeatherWidgetContentAdapter.cs`
-- `src/DeskBox/ViewModels/WeatherWidgetViewModel.cs`
-- `src/DeskBox/ViewModels/WeatherWidgetViewModel.DataProcessing.cs`
-- `src/DeskBox/ViewModels/WeatherWidgetViewModel.RefreshAndLayout.cs`
-- `src/DeskBox/Services/WeatherService.cs`
-- `src/DeskBox/Helpers/WeatherCodeMapper.cs`
-- `src/DeskBox/Helpers/WindowsLocationHelper.cs`
+- `src/DeskBoxWhite/Controls/WidgetContents/WeatherWidgetContent.xaml`
+- `src/DeskBoxWhite/Controls/WidgetContents/WeatherWidgetContent.xaml.cs`
+- `src/DeskBoxWhite/Controls/WidgetContents/WeatherWidgetContentAdapter.cs`
+- `src/DeskBoxWhite/ViewModels/WeatherWidgetViewModel.cs`
+- `src/DeskBoxWhite/ViewModels/WeatherWidgetViewModel.DataProcessing.cs`
+- `src/DeskBoxWhite/ViewModels/WeatherWidgetViewModel.RefreshAndLayout.cs`
+- `src/DeskBoxWhite/Services/WeatherService.cs`
+- `src/DeskBoxWhite/Helpers/WeatherCodeMapper.cs`
+- `src/DeskBoxWhite/Helpers/WindowsLocationHelper.cs`
 
 ## WidgetRegistry
 
@@ -477,11 +477,11 @@ Menu font and spacing are centralized in `App.xaml`.
 
 Relevant resources include:
 
-- `DeskBoxMenuFontFamily`
-- `DeskBoxMenuPresenterPadding`
-- `DeskBoxMenuItemPadding`
-- `DeskBoxMenuItemMinHeight`
-- `DeskBoxMenuItemFontSize`
+- `DeskBoxWhiteMenuFontFamily`
+- `DeskBoxWhiteMenuPresenterPadding`
+- `DeskBoxWhiteMenuItemPadding`
+- `DeskBoxWhiteMenuItemMinHeight`
+- `DeskBoxWhiteMenuItemFontSize`
 
 Tray menu, widget title menus, and content menus should use these shared resources. Do not hard-code local menu font or padding unless there is a specific WinUI limitation.
 
@@ -489,23 +489,23 @@ Tray menu, widget title menus, and content menus should use these shared resourc
 
 Main settings:
 
-- `%LocalAppData%/DeskBox/settings.json`
+- `%LocalAppData%/DeskBoxWhite/settings.json`
 
 Widget-specific data:
 
-- `%LocalAppData%/DeskBox/data/widgets/{widgetId}/...`
+- `%LocalAppData%/DeskBoxWhite/data/widgets/{widgetId}/...`
 
 Todo data:
 
-- `%LocalAppData%/DeskBox/data/widgets/{widgetId}/todo.json`
+- `%LocalAppData%/DeskBoxWhite/data/widgets/{widgetId}/todo.json`
 
 QuickCapture data:
 
-- `%LocalAppData%/DeskBox/data/quick-capture/quick-capture.json`
-- `%LocalAppData%/DeskBox/data/quick-capture/images/...`
-- `%LocalAppData%/DeskBox/data/quick-capture/thumbnails/...`
+- `%LocalAppData%/DeskBoxWhite/data/quick-capture/quick-capture.json`
+- `%LocalAppData%/DeskBoxWhite/data/quick-capture/images/...`
+- `%LocalAppData%/DeskBoxWhite/data/quick-capture/thumbnails/...`
 
-Uninstalling the app may remove binaries but should not be assumed to remove `%LocalAppData%/DeskBox`. This is user data.
+Uninstalling the app may remove binaries but should not be assumed to remove `%LocalAppData%/DeskBoxWhite`. This is user data.
 
 ## Adding A New Content Widget
 
@@ -541,7 +541,7 @@ Reasons:
 
 Then:
 
-- `Tags`: internal DeskBox index only, no file metadata writes.
+- `Tags`: internal DeskBoxWhite index only, no file metadata writes.
 
 Last:
 
@@ -568,8 +568,8 @@ Touch these only with focused changes and manual regression.
 Most recent verification:
 
 ```powershell
-dotnet build .\DeskBox.sln -c Debug -p:Platform=x64 --no-restore
-dotnet test .\DeskBox.sln -c Debug -p:Platform=x64 --no-build
+dotnet build .\DeskBoxWhite.sln -c Debug -p:Platform=x64 --no-restore
+dotnet test .\DeskBoxWhite.sln -c Debug -p:Platform=x64 --no-build
 ```
 
 Result:

@@ -1,0 +1,74 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows10.0.22621.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.19044.0</SupportedOSPlatformVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RuntimeIdentifiers>win-x64;win-arm64</RuntimeIdentifiers>
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == ''">win-x64</RuntimeIdentifier>
+    <Platform Condition="'$(Platform)' == ''">x64</Platform>
+
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <DeskBoxWhiteNativeTestPlatform Condition="'$(Platform)' == 'ARM64' Or '$(RuntimeIdentifier)' == 'win-arm64'">ARM64</DeskBoxWhiteNativeTestPlatform>
+    <DeskBoxWhiteNativeTestPlatform Condition="'$(DeskBoxWhiteNativeTestPlatform)' == ''">x64</DeskBoxWhiteNativeTestPlatform>
+    <DeskBoxWhiteRustCrtLinkage Condition="'$(DeskBoxWhiteRustCrtLinkage)' == ''">Static</DeskBoxWhiteRustCrtLinkage>
+    <DeskBoxWhiteNativeTestIntermediateDir>$(MSBuildProjectDirectory)\obj\rust-native\$(Configuration)\$(Platform)\$(RuntimeIdentifier)\$(DeskBoxWhiteRustCrtLinkage)</DeskBoxWhiteNativeTestIntermediateDir>
+    <DeskBoxWhiteNativeTestCargoTargetDir>$(DeskBoxWhiteNativeTestIntermediateDir)\cargo-target</DeskBoxWhiteNativeTestCargoTargetDir>
+    <DeskBoxWhiteNativeTestDll>$(DeskBoxWhiteNativeTestIntermediateDir)\deskboxwhite_native.dll</DeskBoxWhiteNativeTestDll>
+    <DeskBoxWhiteNativeTestPdb>$(DeskBoxWhiteNativeTestIntermediateDir)\deskboxwhite_native.pdb</DeskBoxWhiteNativeTestPdb>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <DeskBoxWhiteNativeTestInput Include="$(MSBuildProjectDirectory)\..\..\rust-toolchain.toml" />
+    <DeskBoxWhiteNativeTestInput Include="$(MSBuildProjectDirectory)\..\..\native\Cargo.toml" />
+    <DeskBoxWhiteNativeTestInput Include="$(MSBuildProjectDirectory)\..\..\native\Cargo.lock" />
+    <DeskBoxWhiteNativeTestInput Include="$(MSBuildProjectDirectory)\..\..\native\deskboxwhite-native\Cargo.toml" />
+    <DeskBoxWhiteNativeTestInput Include="$(MSBuildProjectDirectory)\..\..\native\deskboxwhite-native\src\**\*" />
+    <DeskBoxWhiteNativeTestInput Include="$(MSBuildProjectDirectory)\..\..\native\include\deskboxwhite_native.h" />
+    <DeskBoxWhiteNativeTestInput Include="$(MSBuildProjectDirectory)\..\..\scripts\build-rust-native.ps1" />
+    <DeskBoxWhiteNativeTestInput Include="$(MSBuildProjectDirectory)\..\..\scripts\native-pe-contract.ps1" />
+    <DeskBoxWhiteNativeTestInput Include="$(MSBuildProjectDirectory)\..\..\scripts\rust-arm64-msvc-environment.ps1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="xunit" Version="2.5.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\DeskBoxWhite\DeskBoxWhite.csproj" />
+    <ProjectReference Include="..\..\src\DeskBoxWhite.Updater\DeskBoxWhite.Updater.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+    <Using Include="DeskBoxWhite.Platform" />
+  </ItemGroup>
+
+  <Target
+    Name="BuildDeskBoxWhiteNativeTestModule"
+    BeforeTargets="CoreCompile"
+    Inputs="@(DeskBoxWhiteNativeTestInput)"
+    Outputs="$(DeskBoxWhiteNativeTestDll);$(DeskBoxWhiteNativeTestPdb)">
+    <Error
+      Condition="'$(DeskBoxWhiteRustCrtLinkage)' != 'Dynamic' and '$(DeskBoxWhiteRustCrtLinkage)' != 'Static'"
+      Text="DeskBoxWhite test Rust CRT linkage must be Dynamic or Static." />
+    <Exec
+      Command="powershell.exe -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\..\..\scripts\build-rust-native.ps1&quot; -Platform $(DeskBoxWhiteNativeTestPlatform) -Configuration $(Configuration) -CrtLinkage $(DeskBoxWhiteRustCrtLinkage) -OutputDirectory &quot;$(DeskBoxWhiteNativeTestIntermediateDir)&quot; -CargoTargetDirectory &quot;$(DeskBoxWhiteNativeTestCargoTargetDir)&quot;" />
+  </Target>
+
+  <Target
+    Name="CopyDeskBoxWhiteNativeTestModule"
+    AfterTargets="Build"
+    DependsOnTargets="BuildDeskBoxWhiteNativeTestModule">
+    <Copy
+      SourceFiles="$(DeskBoxWhiteNativeTestDll);$(DeskBoxWhiteNativeTestPdb)"
+      DestinationFolder="$(OutDir)"
+      SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>

@@ -1,4 +1,4 @@
-# DeskBox
+# DeskBoxWhite
 
 **本地优先的 Windows 10/11 桌面整理工具：用格子管理文件、文件夹、时光、待办、随记、搜索、天气和音乐。**
 
@@ -6,27 +6,27 @@
 
 > 目前暂不接受外部 PR 合并——欢迎通过 Issue / Discussion 提交 Bug、功能建议与技术讨论，详见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
-[![CI](https://github.com/Tianyu199509/DeskBox/actions/workflows/ci.yml/badge.svg)](https://github.com/Tianyu199509/DeskBox/actions/workflows/ci.yml)
-[![1.5.5 版本](https://img.shields.io/badge/release-1.5.5-2563EB.svg)](https://github.com/Tianyu199509/DeskBox/releases/tag/v1.5.5)
+[![CI](https://github.com/nnlpwm21/DeskBoxWhite/actions/workflows/ci.yml/badge.svg)](https://github.com/nnlpwm21/DeskBoxWhite/actions/workflows/ci.yml)
+[![1.5.5 版本](https://img.shields.io/badge/release-1.5.5-2563EB.svg)](https://github.com/nnlpwm21/DeskBoxWhite/releases/tag/v1.5.5)
 [![Windows 10/11](https://img.shields.io/badge/Windows-10%2F11-0078D4.svg)](#环境要求)
 [![x64 and ARM64](https://img.shields.io/badge/architecture-x64%20%7C%20ARM64-5C2D91.svg)](#下载)
 [![License: GPL v3](https://img.shields.io/badge/license-GPLv3-blue.svg)](LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/Tianyu199509/DeskBox?style=flat&color=yellow)](https://github.com/Tianyu199509/DeskBox/stargazers)
-[![Downloads](https://img.shields.io/github/downloads/Tianyu199509/DeskBox/total?style=flat&color=brightgreen)](https://github.com/Tianyu199509/DeskBox/releases)
+[![GitHub stars](https://img.shields.io/github/stars/nnlpwm21/DeskBoxWhite?style=flat&color=yellow)](https://github.com/nnlpwm21/DeskBoxWhite/stargazers)
+[![Downloads](https://img.shields.io/github/downloads/nnlpwm21/DeskBoxWhite/total?style=flat&color=brightgreen)](https://github.com/nnlpwm21/DeskBoxWhite/releases)
 
-![DeskBox Windows 桌面整理工具，包含文件、待办、搜索、天气和音乐格子](docs/images/brand/readme-hero-1-3-7-dark-zh-cn.png)
+![DeskBoxWhite Windows 桌面整理工具，包含文件、待办、搜索、天气和音乐格子](docs/images/brand/readme-hero-1-3-7-dark-zh-cn.png)
 
-DeskBox 基于 C#、WinUI 3 和 Windows App SDK 构建，在原生 Windows 桌面上增加一层轻量格子，但不会替换资源管理器，也不会改变文件原本的使用方式。你可以创建真实文件夹支撑的文件格子、映射已有文件夹、用时光格子保留日期与农历、记录待办与随记、搜索电脑内容、查看天气或控制当前音乐。格子既能保持展开，也能收起成胶囊，并可通过托盘或全局快捷键临时唤起。
+DeskBoxWhite 基于 C#、WinUI 3 和 Windows App SDK 构建，在原生 Windows 桌面上增加一层轻量格子，但不会替换资源管理器，也不会改变文件原本的使用方式。你可以创建真实文件夹支撑的文件格子、映射已有文件夹、用时光格子保留日期与农历、记录待办与随记、搜索电脑内容、查看天气或控制当前音乐。格子既能保持展开，也能收起成胶囊，并可通过托盘或全局快捷键临时唤起。
 
 ## 桌面上的 Mica 与 Acrylic
 
-DeskBox 使用贴近 Windows 原生体验的材质，同时保留普通桌面文件与文件夹原本的使用方式。
+DeskBoxWhite 使用贴近 Windows 原生体验的材质，同时保留普通桌面文件与文件夹原本的使用方式。
 
 | Mica 云母 | Acrylic 亚克力 |
 | --- | --- |
-| ![DeskBox 中文界面的 Windows 11 云母材质桌面格子](docs/images/screenshots/zh-cn/云母材质.png) | ![DeskBox 中文界面的 Windows 11 亚克力材质桌面格子](docs/images/screenshots/zh-cn/亚克力材质.png) |
+| ![DeskBoxWhite 中文界面的 Windows 11 云母材质桌面格子](docs/images/screenshots/zh-cn/云母材质.png) | ![DeskBoxWhite 中文界面的 Windows 11 亚克力材质桌面格子](docs/images/screenshots/zh-cn/亚克力材质.png) |
 
-## DeskBox 概览
+## DeskBoxWhite 概览
 
 | | |
 | --- | --- |
@@ -40,16 +40,16 @@ DeskBox 使用贴近 Windows 原生体验的材质，同时保留普通桌面文
 
 ## 下载
 
-DeskBox 1.5.5 已进入发版准备阶段。下方 [GitHub Releases](https://github.com/Tianyu199509/DeskBox/releases/tag/v1.5.5) 下载链接会在正式发布后生效。
+DeskBoxWhite 1.5.5 已进入发版准备阶段。下方 [GitHub Releases](https://github.com/nnlpwm21/DeskBoxWhite/releases/tag/v1.5.5) 下载链接会在正式发布后生效。
 
-- [DeskBox 1.5.5 x64 安装包](https://github.com/Tianyu199509/DeskBox/releases/download/v1.5.5/DeskBox_Setup_1.5.5_x64.exe)，推荐大多数 Intel 和 AMD 电脑使用。
-- [DeskBox 1.5.5 ARM64 安装包](https://github.com/Tianyu199509/DeskBox/releases/download/v1.5.5/DeskBox_Setup_1.5.5_arm64.exe)，推荐骁龙、Surface Pro X 等 Windows on ARM 电脑使用。
+- [DeskBoxWhite 1.5.5 x64 安装包](https://github.com/nnlpwm21/DeskBoxWhite/releases/download/v1.5.5/DeskBoxWhite_Setup_1.5.5_x64.exe)，推荐大多数 Intel 和 AMD 电脑使用。
+- [DeskBoxWhite 1.5.5 ARM64 安装包](https://github.com/nnlpwm21/DeskBoxWhite/releases/download/v1.5.5/DeskBoxWhite_Setup_1.5.5_arm64.exe)，推荐骁龙、Surface Pro X 等 Windows on ARM 电脑使用。
 
 两个安装包都是 Full Native AOT 构建，并内置对应架构的私有 Windows App Runtime 2.4，可离线安装，不需要另外下载 .NET 10 或 Windows App Runtime。
 
 每个安装包都提供同名的 `.sha256` 校验文件。安装包目前尚未进行 Authenticode 签名，介意者请在运行前核对哈希。
 
-> DeskBox 本体默认安装到当前用户目录。
+> DeskBoxWhite 本体默认安装到当前用户目录。
 
 ## 核心功能
 
@@ -78,13 +78,13 @@ DeskBox 1.5.5 已进入发版准备阶段。下方 [GitHub Releases](https://git
 - 待办与随记使用响应式列表/详情布局，宽屏可双栏展示并调整列表宽度，窄屏会自动切换为单页浏览。
 - 待办支持截止日期、提醒、重复、颜色标记、Markdown 备注、多附件、筛选与批量操作。
 - 随记支持文本、链接、图片和文件，提供固定、纸张样式、Markdown 编辑与预览、附件删除和专注编辑。
-- 附件可以关联原文件，也可以复制到 DeskBox 管理的数据目录。
+- 附件可以关联原文件，也可以复制到 DeskBoxWhite 管理的数据目录。
 
 ### 桌面搜索
 
 - 在一个搜索弹窗或搜索格子中查找文件、文件夹、应用、设置与随记、待办内容。
-- 文件结果通过本机 IPC 读取 Everything 已有索引，并与 DeskBox 内容在同一窗口合并展示，DeskBox 不再维护重复的文件索引。
-- 设置中可检测或启动 Everything、选择其程序位置、查看连接与权限状态、启用高级语法并过滤低价值的系统与缓存路径。Everything 不随 DeskBox 捆绑，需要单独安装。
+- 文件结果通过本机 IPC 读取 Everything 已有索引，并与 DeskBoxWhite 内容在同一窗口合并展示，DeskBoxWhite 不再维护重复的文件索引。
+- 设置中可检测或启动 Everything、选择其程序位置、查看连接与权限状态、启用高级语法并过滤低价值的系统与缓存路径。Everything 不随 DeskBoxWhite 捆绑，需要单独安装。
 - 支持结果筛选、可排序详细列、数量设置、历史、收藏和独立全局快捷键。
 - 支持 Ctrl/Shift 多选、带边缘自动滚动的框选，以及对选中结果执行批量操作。
 - 搜索结果按阶段增量返回；单个来源异常时会被隔离，不影响其他来源继续工作。
@@ -111,7 +111,7 @@ DeskBox 1.5.5 已进入发版准备阶段。下方 [GitHub Releases](https://git
 
 ### 布局、显示器与性能
 
-- DeskBox 为不同的显示器拓扑分别保存格子布局。重新接入用过的屏幕组合后，会恢复该组合对应的位置、尺寸、格子组表面和胶囊位置；热插拔、工作区和 DPI 变化会先等待稳定再恢复，切换期间暂停写入布局，避免临时坐标覆盖已保存的布局。
+- DeskBoxWhite 为不同的显示器拓扑分别保存格子布局。重新接入用过的屏幕组合后，会恢复该组合对应的位置、尺寸、格子组表面和胶囊位置；热插拔、工作区和 DPI 变化会先等待稳定再恢复，切换期间暂停写入布局，避免临时坐标覆盖已保存的布局。
 - 更换显示器或缩放比例变化时，会按可用工作区映射出限制在屏幕范围内的比例布局，不会把格子留在屏幕外。
 - 按住 Ctrl 拖动格子标题，可把当前显示器上的可移动格子作为一个整体移动。吸附在移动和调整尺寸时都生效，可设置相邻格子间距，并保证贴近屏幕边缘时仍在可用工作区内。
 - 设置 > 常规的“性能与资源”提供均衡、节省资源和自定义三种模式；自定义可分别控制格子隐藏后的缓存回收、可见闲置回收、临时窗口释放、图标/缩略图/解码图片缓存容量，以及文字跑马灯、唱片旋转、时光图片切换和胶囊光效等持续动画。
@@ -121,7 +121,7 @@ DeskBox 1.5.5 已进入发版准备阶段。下方 [GitHub Releases](https://git
 ### 更新、备份与诊断
 
 - 支持应用内检查更新，在独立界面阅读较长的更新日志；下载失败时可重试或前往官网继续下载。
-- DeskBox 关闭后会显示安装界面；升级会复用并锁定原安装路径，避免生成第二份应用。
+- DeskBoxWhite 关闭后会显示安装界面；升级会复用并锁定原安装路径，避免生成第二份应用。
 - 支持设置备份与恢复，并可导出经过隐私过滤的一键诊断包用于排查问题。
 - 设置使用可恢复快照，退出时刷新待保存内容；保存失败会明确记录和提示，不再静默恢复默认配置。
 
@@ -129,7 +129,7 @@ DeskBox 1.5.5 已进入发版准备阶段。下方 [GitHub Releases](https://git
 
 - **云备份上线。** 把待办、随记和格子样式定时备份到你自己的 WebDAV 服务器（设置 → 维护）。密码保存在 Windows 凭据管理器，每个数据域独立开关，远端快照可浏览、可还原。
 - **想还原什么就还原什么。** 可选回哪些数据域——待办、随记、格子样式——并选择"合并"（新者胜出、不删除本机数据）或"完全恢复"（严格按快照还原）。删除现在会留下墓碑，合并还原不再复活本机已删的条目。
-- **拖放到处都好用。** 从格子拖出文件现在携带与 Explorer 同源的原生 Shell 数据对象：VS Code、浏览器等此前拒绝 DeskBox 拖放的目标现在都能接受。跨盘传输改走系统文件操作引擎，获得原生进度、取消与冲突处理——修复了跨盘导入以"0 items"空完成的问题。
+- **拖放到处都好用。** 从格子拖出文件现在携带与 Explorer 同源的原生 Shell 数据对象：VS Code、浏览器等此前拒绝 DeskBoxWhite 拖放的目标现在都能接受。跨盘传输改走系统文件操作引擎，获得原生进度、取消与冲突处理——修复了跨盘导入以"0 items"空完成的问题。
 - **热键自愈。** Windows 会静默摘除全局热键、搜索热键、桌面双击激活背后的低级钩子——此前只能重启恢复。现在有健康 watchdog 自动检测并重新注册。
 - **真正静默时修剪空闲内存。** 不再要求全部隐藏——格子在几秒真实静默后即可向 Windows 归还内存，受绝对工作集下限和常驻动画感知保护。由新的"空闲时修剪内存"选项控制。
 - **吸附反馈换上 Fluent 风格。** 调整或拖动时的循环呼吸辉光改为锐利的 accent 边缘光带，落定一次后稳定常亮，在圆角处自然消融。
@@ -179,31 +179,31 @@ DeskBox 1.5.5 已进入发版准备阶段。下方 [GitHub Releases](https://git
 
 ## 当前界面
 
-以下图片用于展示当前 DeskBox 的设置界面。
+以下图片用于展示当前 DeskBoxWhite 的设置界面。
 
 ### 设置
 
 | 常规 | 外观 |
 | --- | --- |
-| ![DeskBox 中文常规设置](docs/images/screenshots/zh-cn/常规.png) | ![DeskBox 中文外观设置](docs/images/screenshots/zh-cn/外观.png) |
+| ![DeskBoxWhite 中文常规设置](docs/images/screenshots/zh-cn/常规.png) | ![DeskBoxWhite 中文外观设置](docs/images/screenshots/zh-cn/外观.png) |
 
 | 胶囊模式 | 文件格子 |
 | --- | --- |
-| ![DeskBox 中文胶囊模式设置](docs/images/screenshots/zh-cn/胶囊模式.png) | ![DeskBox 中文文件格子设置](docs/images/screenshots/zh-cn/文件格子.png) |
+| ![DeskBoxWhite 中文胶囊模式设置](docs/images/screenshots/zh-cn/胶囊模式.png) | ![DeskBoxWhite 中文文件格子设置](docs/images/screenshots/zh-cn/文件格子.png) |
 
 | 功能格子 | 快捷与交互 |
 | --- | --- |
-| ![DeskBox 中文功能格子设置](docs/images/screenshots/zh-cn/功能格子.png) | ![DeskBox 中文快捷与交互设置](docs/images/screenshots/zh-cn/快捷与交互.png) |
+| ![DeskBoxWhite 中文功能格子设置](docs/images/screenshots/zh-cn/功能格子.png) | ![DeskBoxWhite 中文快捷与交互设置](docs/images/screenshots/zh-cn/快捷与交互.png) |
 
 ## 本地数据与隐私
 
-DeskBox 不要求注册账号，也不依赖云同步。格子配置、待办、随记、搜索历史、窗口布局和收纳文件都保存在本机。
+DeskBoxWhite 不要求注册账号，也不依赖云同步。格子配置、待办、随记、搜索历史、窗口布局和收纳文件都保存在本机。
 
 以下功能会按使用意图联网：
 
 - 天气数据来自 MSN 天气或 Open-Meteo。
-- 更新检查访问 DeskBox 更新服务或 GitHub Releases。
-- DeskBox 1.4.8 及后续 Full 安装包内置匹配架构的 Windows App Runtime；更早的直发安装器会在缺少运行时时联网下载。
+- 更新检查访问 DeskBoxWhite 更新服务或 GitHub Releases。
+- DeskBoxWhite 1.4.8 及后续 Full 安装包内置匹配架构的 Windows App Runtime；更早的直发安装器会在缺少运行时时联网下载。
 - 从浏览器拖入远程链接时，只有确认导入的内容会被下载。
 
 胶囊隐私选项只是在收起状态下隐藏部分文字，属于展示控制，并不等同于文件加密。
@@ -212,32 +212,32 @@ DeskBox 不要求注册账号，也不依赖云同步。格子配置、待办、
 
 - Windows 10 21H2（build 19044）或更高版本；Windows 11 22H2 或更高版本可获得完整视觉效果。
 - 与安装包匹配的 x64 或 ARM64 处理器。
-- Windows App Runtime 2.4。DeskBox 1.4.8 及后续 Full 安装包内置匹配架构的专用运行时，Native AOT 版本不再需要单独的 .NET 10 运行时。
+- Windows App Runtime 2.4。DeskBoxWhite 1.4.8 及后续 Full 安装包内置匹配架构的专用运行时，Native AOT 版本不再需要单独的 .NET 10 运行时。
 
 Windows 10 会自动降级不受系统支持的材质、圆角和部分动画；文件同步、拖放与格子核心功能仍按兼容基线验证。
 
 ## 安装、更新与卸载
 
-DeskBox 使用 Inno Setup 安装器，默认安装到当前用户目录。覆盖安装会保留应用设置、格子配置和收纳目录。旧版如果安装在 Program Files，安装器会进行迁移，以避免管理员权限进程影响资源管理器拖拽。
+DeskBoxWhite 使用 Inno Setup 安装器，默认安装到当前用户目录。覆盖安装会保留应用设置、格子配置和收纳目录。旧版如果安装在 Program Files，安装器会进行迁移，以避免管理员权限进程影响资源管理器拖拽。
 
-开机自启会静默启动到托盘。DeskBox 已运行时，再启动一个实例会直接退出，不会重复打开设置窗口。
+开机自启会静默启动到托盘。DeskBoxWhite 已运行时，再启动一个实例会直接退出，不会重复打开设置窗口。
 
-开机自启使用当前用户的 Run 注册表项，因此 DeskBox 会出现在“Windows 设置 → 应用 → 启动”中；旧的计划任务注册会在安全的前提下自动迁移，在系统侧关闭 DeskBox 后应用内开关也会同步显示为关闭。
+开机自启使用当前用户的 Run 注册表项，因此 DeskBoxWhite 会出现在“Windows 设置 → 应用 → 启动”中；旧的计划任务注册会在安全的前提下自动迁移，在系统侧关闭 DeskBoxWhite 后应用内开关也会同步显示为关闭。
 
-卸载时会明确提供“保留应用数据”和“彻底删除应用数据”两个选择。彻底删除会清理 `%LocalAppData%\DeskBox`、`%LocalAppData%\DeskBox-Recovery`、临时文件和 DeskBox 自己创建的注册信息；收纳路径中的用户文件始终保留。静默卸载默认保留应用数据，管理员只有显式传入 `/PURGEUSERDATA` 才会执行彻底清理。
+卸载时会明确提供“保留应用数据”和“彻底删除应用数据”两个选择。彻底删除会清理 `%LocalAppData%\DeskBoxWhite`、`%LocalAppData%\DeskBoxWhite-Recovery`、临时文件和 DeskBoxWhite 自己创建的注册信息；收纳路径中的用户文件始终保留。静默卸载默认保留应用数据，管理员只有显式传入 `/PURGEUSERDATA` 才会执行彻底清理。
 
 ## 常见问题
 
-### DeskBox 会替换 Windows 桌面吗？
+### DeskBoxWhite 会替换 Windows 桌面吗？
 
-不会。Windows 资源管理器仍是桌面外壳，文件也仍是普通文件和文件夹。DeskBox 只是在现有桌面上增加独立管理的格子。
+不会。Windows 资源管理器仍是桌面外壳，文件也仍是普通文件和文件夹。DeskBoxWhite 只是在现有桌面上增加独立管理的格子。
 
-### DeskBox 把数据保存在哪里？
+### DeskBoxWhite 把数据保存在哪里？
 
-- 应用设置和格子数据：`%LocalAppData%\DeskBox\data`
-- 新用户收纳目录：优先使用空间充足的非系统固定磁盘，例如 `D:\DeskBox\用户名`；没有合适磁盘时回退到 `%UserProfile%\DeskBox`
+- 应用设置和格子数据：`%LocalAppData%\DeskBoxWhite\data`
+- 新用户收纳目录：优先使用空间充足的非系统固定磁盘，例如 `D:\DeskBoxWhite\用户名`；没有合适磁盘时回退到 `%UserProfile%\DeskBoxWhite`
 
-两类数据都可以通过 DeskBox 设置中的备份功能进行备份。
+两类数据都可以通过 DeskBoxWhite 设置中的备份功能进行备份。
 
 ### 应该下载 x64 还是 ARM64？
 
@@ -253,14 +253,14 @@ DeskBox 使用 Inno Setup 安装器，默认安装到当前用户目录。覆盖
 
 ## 从源码构建
 
-开发需要 .NET 10 SDK 和 Windows 11 环境，推荐安装带 Windows App SDK 工作负载的 Visual Studio。发布时如果带上 `-p:DeskBoxRustNative=true`（正式版本使用），还需要 `rust-toolchain.toml` 指定的 Rust 工具链，用于编译快捷方式、系统音量、快速访问、回收站和资源管理器 Shell 相关的原生路径。
+开发需要 .NET 10 SDK 和 Windows 11 环境，推荐安装带 Windows App SDK 工作负载的 Visual Studio。发布时如果带上 `-p:DeskBoxWhiteRustNative=true`（正式版本使用），还需要 `rust-toolchain.toml` 指定的 Rust 工具链，用于编译快捷方式、系统音量、快速访问、回收站和资源管理器 Shell 相关的原生路径。
 
 还原、测试并构建 x64 Debug 版本：
 
 ```powershell
-dotnet restore .\DeskBox.sln -p:Platform=x64
-dotnet test .\DeskBox.Tests\DeskBox.Tests.csproj --configuration Debug --no-restore -p:Platform=x64 -v:minimal
-dotnet build .\src\DeskBox\DeskBox.csproj --configuration Debug --no-restore -p:Platform=x64 -v:minimal
+dotnet restore .\DeskBoxWhite.sln -p:Platform=x64
+dotnet test .\DeskBoxWhite.Tests\DeskBoxWhite.Tests.csproj --configuration Debug --no-restore -p:Platform=x64 -v:minimal
+dotnet build .\src\DeskBoxWhite\DeskBoxWhite.csproj --configuration Debug --no-restore -p:Platform=x64 -v:minimal
 ```
 
 `scripts\publish-aot-retail.ps1` 是正式零售产物的权威入口，它会生成 Full Native AOT 载荷、内置 Windows App Runtime、编译对应架构的 Rust DLL、生成升级清单并校验产物：
@@ -270,27 +270,27 @@ dotnet build .\src\DeskBox\DeskBox.csproj --configuration Debug --no-restore -p:
 .\scripts\publish-aot-retail.ps1 -Platform ARM64
 ```
 
-发布结果同时满足 .NET Native AOT 与 Windows App SDK 自包含要求。不要用裸 `dotnet publish` 替代这个脚本，安装器需要脚本生成的 `DeskBox.InstallManifest.txt` 才能安全清理旧载荷：
+发布结果同时满足 .NET Native AOT 与 Windows App SDK 自包含要求。不要用裸 `dotnet publish` 替代这个脚本，安装器需要脚本生成的 `DeskBoxWhite.InstallManifest.txt` 才能安全清理旧载荷：
 
 ```powershell
-ISCC.exe /DDeskBoxNativeAot=1 /DDeskBoxBundledRuntime=1 /DMyAppReleaseDir=..\.artifacts\aot-retail\win-x64\publish .\installer\DeskBox.iss
-ISCC.exe /DDeskBoxNativeAot=1 /DDeskBoxBundledRuntime=1 /DMyAppReleaseDir=..\.artifacts\aot-retail\win-arm64\publish .\installer\DeskBox.arm64.iss
+ISCC.exe /DDeskBoxWhiteNativeAot=1 /DDeskBoxWhiteBundledRuntime=1 /DMyAppReleaseDir=..\.artifacts\aot-retail\win-x64\publish .\installer\DeskBoxWhite.iss
+ISCC.exe /DDeskBoxWhiteNativeAot=1 /DDeskBoxWhiteBundledRuntime=1 /DMyAppReleaseDir=..\.artifacts\aot-retail\win-arm64\publish .\installer\DeskBoxWhite.arm64.iss
 ```
 
 预期输出：
 
 ```text
-Output\DeskBox_Setup_1.4.8_x64.exe
-Output\DeskBox_Setup_1.4.8_arm64.exe
+Output\DeskBoxWhite_Setup_1.4.8_x64.exe
+Output\DeskBoxWhite_Setup_1.4.8_arm64.exe
 ```
 
 ## 项目结构
 
 ```text
-src\DeskBox                 WinUI 3 应用源码（格子外壳、服务、视图）
-src\DeskBox.Updater         直发版更新辅助程序
+src\DeskBoxWhite                 WinUI 3 应用源码（格子外壳、服务、视图）
+src\DeskBoxWhite.Updater         直发版更新辅助程序
 native                      Rust 原生层、Shell ABI 与缩略图代理
-tests\DeskBox.Tests         服务、策略与 AOT 契约测试
+tests\DeskBoxWhite.Tests         服务、策略与 AOT 契约测试
 scripts                     构建、发布、审计与内存测量脚本
 installer                   x64/ARM64 Inno Setup 脚本
 docs\architecture           当前架构、原生 ABI 契约与 AOT 阶段记录
@@ -302,7 +302,7 @@ docs\releases               版本发布文案和测试清单
 
 ## 反馈与本地化
 
-DeskBox 目前由个人独立开发和维护。为了保持架构一致性与后续版权边界，现阶段暂不接受外部 Pull Request；欢迎通过 [GitHub Issues](https://github.com/Tianyu199509/DeskBox/issues) 提交问题、功能建议、翻译和 UI/UX 反馈。
+DeskBoxWhite 目前由个人独立开发和维护。为了保持架构一致性与后续版权边界，现阶段暂不接受外部 Pull Request；欢迎通过 [GitHub Issues](https://github.com/nnlpwm21/DeskBoxWhite/issues) 提交问题、功能建议、翻译和 UI/UX 反馈。
 
 特别感谢 [@magisph](https://github.com/magisph) 提供巴西葡萄牙语本地化支持。
 
@@ -311,13 +311,14 @@ DeskBox 目前由个人独立开发和维护。为了保持架构一致性与后
 ## 作者与协议
 
 - 开发者：朱天雨
-- 项目地址：<https://github.com/Tianyu199509/DeskBox>
+- 维护者：秦伯臻
+- 项目地址：<https://github.com/nnlpwm21/DeskBoxWhite>
 - 开源协议：[GPL-3.0-only](LICENSE)
 
-早期已按 MIT 协议发布的 DeskBox 版本继续保持原许可，协议变更不追溯历史版本。
+早期已按 MIT 协议发布的 DeskBoxWhite 版本继续保持原许可，协议变更不追溯历史版本。
 
 ## Star 趋势
 
-如果 DeskBox 对你有帮助，欢迎点一个 Star ⭐，这是对这个独立项目最大的鼓励。
+如果 DeskBoxWhite 对你有帮助，欢迎点一个 Star ⭐，这是对这个独立项目最大的鼓励。
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Tianyu199509/DeskBox&type=Date)](https://star-history.com/#Tianyu199509/DeskBox&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=nnlpwm21/DeskBoxWhite&type=Date)](https://star-history.com/#nnlpwm21/DeskBoxWhite&Date)

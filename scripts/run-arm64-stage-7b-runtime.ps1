@@ -23,9 +23,9 @@ $testResultsDirectory = Join-Path $outputRoot "test-results"
 $cargoTargetRoot = Join-Path $repoRoot ".artifacts\cargo\arm64-stage7b"
 $evidencePath = Join-Path $outputRoot "arm64-stage7b-runtime-evidence.json"
 $nativeBuildScript = Join-Path $PSScriptRoot "build-rust-native.ps1"
-$testProject = Join-Path $repoRoot "tests\DeskBox.Tests\DeskBox.Tests.csproj"
+$testProject = Join-Path $repoRoot "tests\DeskBoxWhite.Tests\DeskBoxWhite.Tests.csproj"
 
-function Invoke-DeskBoxBuildProbe {
+function Invoke-DeskBoxWhiteBuildProbe {
     param(
         [Parameter(Mandatory)]
         [string]$Script,
@@ -51,7 +51,7 @@ function Invoke-DeskBoxBuildProbe {
     return $results[0]
 }
 
-function Get-DeskBoxFileEvidence {
+function Get-DeskBoxWhiteFileEvidence {
     param(
         [Parameter(Mandatory)]
         [string]$Path
@@ -73,7 +73,7 @@ function Get-DeskBoxFileEvidence {
     }
 }
 
-function Get-DeskBoxCommandText {
+function Get-DeskBoxWhiteCommandText {
     param(
         [Parameter(Mandatory)]
         [string]$FileName,
@@ -116,9 +116,9 @@ try {
     }
 
     $dotnet = (Get-Command dotnet -ErrorAction Stop).Source
-    $dotnetVersion = Get-DeskBoxCommandText -FileName $dotnet -Arguments @("--version")
-    $rustcVersion = Get-DeskBoxCommandText -FileName "rustc" -Arguments @("-vV")
-    $cargoVersion = Get-DeskBoxCommandText -FileName "cargo" -Arguments @("--version")
+    $dotnetVersion = Get-DeskBoxWhiteCommandText -FileName $dotnet -Arguments @("--version")
+    $rustcVersion = Get-DeskBoxWhiteCommandText -FileName "rustc" -Arguments @("-vV")
+    $cargoVersion = Get-DeskBoxWhiteCommandText -FileName "cargo" -Arguments @("--version")
     if ($rustcVersion.IndexOf(
             "host: aarch64-pc-windows-msvc",
             [System.StringComparison]::OrdinalIgnoreCase) -lt 0) {
@@ -130,9 +130,9 @@ try {
         throw "Stage 7B requires the repository-pinned rustc 1.96.0 toolchain."
     }
 
-    $gitCommit = Get-DeskBoxCommandText -FileName "git" -Arguments @(
+    $gitCommit = Get-DeskBoxWhiteCommandText -FileName "git" -Arguments @(
         "-C", $repoRoot, "rev-parse", "HEAD")
-    $gitStatusText = Get-DeskBoxCommandText -FileName "git" -Arguments @(
+    $gitStatusText = Get-DeskBoxWhiteCommandText -FileName "git" -Arguments @(
         "-C", $repoRoot, "status", "--porcelain=v1")
     $gitStatusEntries = @($gitStatusText -split "`r?`n" | Where-Object {
         -not [string]::IsNullOrWhiteSpace($_)
@@ -148,7 +148,7 @@ try {
         }
     }
 
-    $nativeResult = Invoke-DeskBoxBuildProbe `
+    $nativeResult = Invoke-DeskBoxWhiteBuildProbe `
         -Script $nativeBuildScript `
         -ModuleOutput $nativeOutput
     if (-not $nativeResult.RuntimeProbeExecuted -or
@@ -160,14 +160,14 @@ try {
         throw "ARM64 build completed without the required runtime ABI plus static PE validation."
     }
     if ($nativeResult.AbiVersion -ne 2 -or $nativeResult.Capabilities -ne 511) {
-        throw "deskbox_native.dll returned an unexpected ABI or capability mask."
+        throw "deskboxwhite_native.dll returned an unexpected ABI or capability mask."
     }
     $previousGate = [Environment]::GetEnvironmentVariable(
-        "DESKBOX_REQUIRE_ARM64_RUNTIME_GATE",
+        "DESKBOXWHITE_REQUIRE_ARM64_RUNTIME_GATE",
         "Process")
     try {
         [Environment]::SetEnvironmentVariable(
-            "DESKBOX_REQUIRE_ARM64_RUNTIME_GATE",
+            "DESKBOXWHITE_REQUIRE_ARM64_RUNTIME_GATE",
             "1",
             "Process")
         $testArguments = @(
@@ -176,11 +176,11 @@ try {
             "--configuration", $Configuration,
             "-p:Platform=ARM64",
             "-p:RuntimeIdentifier=win-arm64",
-            "-p:DeskBoxRustCrtLinkage=Static",
+            "-p:DeskBoxWhiteRustCrtLinkage=Static",
             "-p:WindowsAppSdkBootstrapInitialize=false",
             "--results-directory", $testResultsDirectory,
             "--logger", "trx;LogFileName=arm64-runtime-gate.trx",
-            "--filter", "FullyQualifiedName~DeskBox.Tests.Arm64NativeRuntimeGateTests",
+            "--filter", "FullyQualifiedName~DeskBoxWhite.Tests.Arm64NativeRuntimeGateTests",
             "--blame-hang",
             "--blame-hang-timeout", "5m",
             "--verbosity", "minimal")
@@ -193,7 +193,7 @@ try {
     }
     finally {
         [Environment]::SetEnvironmentVariable(
-            "DESKBOX_REQUIRE_ARM64_RUNTIME_GATE",
+            "DESKBOXWHITE_REQUIRE_ARM64_RUNTIME_GATE",
             $previousGate,
             "Process")
     }
@@ -234,7 +234,7 @@ catch {
 finally {
     $finishedUtc = [DateTime]::UtcNow
     $evidence = [ordered]@{
-        schema = "deskbox.arm64-stage7b-runtime-evidence.v1"
+        schema = "deskboxwhite.arm64-stage7b-runtime-evidence.v1"
         status = $status
         evidenceLevel = "github-hosted-arm64-runtime"
         startedUtc = $startedUtc.ToString("O")
@@ -286,14 +286,14 @@ finally {
                 exportCount = $nativeResult.ExportCount
                 contractValidation = $nativeResult.ContractValidation
                 runtimeProbeExecuted = $nativeResult.RuntimeProbeExecuted
-                dll = Get-DeskBoxFileEvidence -Path $nativeResult.Dll
-                pdb = Get-DeskBoxFileEvidence -Path $nativeResult.Pdb
+                dll = Get-DeskBoxWhiteFileEvidence -Path $nativeResult.Dll
+                pdb = Get-DeskBoxWhiteFileEvidence -Path $nativeResult.Pdb
             }
         }
         tests = [ordered]@{
             exitCode = $testExitCode
             counters = $testCounters
-            trx = Get-DeskBoxFileEvidence -Path (
+            trx = Get-DeskBoxWhiteFileEvidence -Path (
                 Join-Path $testResultsDirectory "arm64-runtime-gate.trx")
         }
         failure = $failure
@@ -303,7 +303,7 @@ finally {
 }
 
 if ($status -ne "passed") {
-    throw "DeskBox Stage 7B ARM64 runtime gate failed. Evidence: '$evidencePath'. $failure"
+    throw "DeskBoxWhite Stage 7B ARM64 runtime gate failed. Evidence: '$evidencePath'. $failure"
 }
 
 [pscustomobject]@{

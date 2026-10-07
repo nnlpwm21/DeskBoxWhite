@@ -1,4 +1,4 @@
-function Get-DeskBoxMsvcEnvironment {
+function Get-DeskBoxWhiteMsvcEnvironment {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
@@ -33,7 +33,7 @@ function Get-DeskBoxMsvcEnvironment {
             "x64"
         }
         else {
-            throw "DeskBox Rust builds require a native ARM64 or x64 PowerShell host; found '$processArchitecture'."
+            throw "DeskBoxWhite Rust builds require a native ARM64 or x64 PowerShell host; found '$processArchitecture'."
         }
     )
 
@@ -222,7 +222,7 @@ function Get-DeskBoxMsvcEnvironment {
     }
 }
 
-function Enter-DeskBoxMsvcEnvironment {
+function Enter-DeskBoxWhiteMsvcEnvironment {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
@@ -275,7 +275,7 @@ function Enter-DeskBoxMsvcEnvironment {
     }
 }
 
-function Exit-DeskBoxMsvcEnvironment {
+function Exit-DeskBoxWhiteMsvcEnvironment {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
@@ -298,29 +298,29 @@ function Exit-DeskBoxMsvcEnvironment {
 
 # Compatibility wrappers keep the existing ARM64 build scripts narrow while the
 # shared implementation also supplies the explicit x64 NativeAOT environment.
-function Get-DeskBoxArm64MsvcEnvironment {
+function Get-DeskBoxWhiteArm64MsvcEnvironment {
     [CmdletBinding()]
     param()
 
-    Get-DeskBoxMsvcEnvironment -Platform ARM64
+    Get-DeskBoxWhiteMsvcEnvironment -Platform ARM64
 }
 
-function Enter-DeskBoxArm64MsvcEnvironment {
+function Enter-DeskBoxWhiteArm64MsvcEnvironment {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
         [psobject]$Toolchain
     )
 
-    Enter-DeskBoxMsvcEnvironment -Toolchain $Toolchain
+    Enter-DeskBoxWhiteMsvcEnvironment -Toolchain $Toolchain
 }
 
-function Exit-DeskBoxArm64MsvcEnvironment {
+function Exit-DeskBoxWhiteArm64MsvcEnvironment {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
         [psobject]$State
     )
 
-    Exit-DeskBoxMsvcEnvironment -State $State
+    Exit-DeskBoxWhiteMsvcEnvironment -State $State
 }

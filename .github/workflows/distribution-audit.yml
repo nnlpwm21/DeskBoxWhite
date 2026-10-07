@@ -89,7 +89,7 @@ jobs:
       - name: Restore architecture-specific assets
         shell: pwsh
         run: >-
-          dotnet restore .\DeskBox.sln
+          dotnet restore .\DeskBoxWhite.sln
           --locked-mode
           -p:Platform=${{ matrix.platform }}
           -p:RuntimeIdentifier=${{ matrix.rid }}
@@ -116,8 +116,8 @@ jobs:
             .artifacts/stage7c1-${{ matrix.rid }}/inno-compile.log
             .artifacts/stage7c1-${{ matrix.rid }}/direct-installer/*.exe
             .artifacts/stage7c1-${{ matrix.rid }}/store/*.msixupload
-            .artifacts/stage7c1-${{ matrix.rid }}/store/**/*DeskBox*.msix
-            .artifacts/stage7c1-${{ matrix.rid }}/store/**/*DeskBox*.appxsym
+            .artifacts/stage7c1-${{ matrix.rid }}/store/**/*DeskBoxWhite*.msix
+            .artifacts/stage7c1-${{ matrix.rid }}/store/**/*DeskBoxWhite*.appxsym
             .artifacts/stage7c1-${{ matrix.rid }}/store-audit/summary.json
             .artifacts/stage7c1-${{ matrix.rid }}/store-audit/package-files.txt
             .artifacts/stage7c1-${{ matrix.rid }}/store-audit/AppxManifest.xml

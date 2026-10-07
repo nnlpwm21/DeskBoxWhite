@@ -14,14 +14,14 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$shortcutSmokeEnvironmentVariable = "DESKBOX_AOT_SHORTCUT_SMOKE"
-$shellSmokeEnvironmentVariable = "DESKBOX_AOT_SHELL_SMOKE"
-$mutationSmokeEnvironmentVariable = "DESKBOX_AOT_QUICK_ACCESS_MUTATION_SMOKE"
-$musicReadSmokeEnvironmentVariable = "DESKBOX_AOT_MUSIC_VOLUME_READ_SMOKE"
-$musicMutationSmokeEnvironmentVariable = "DESKBOX_AOT_MUSIC_VOLUME_MUTATION_SMOKE"
+$shortcutSmokeEnvironmentVariable = "DESKBOXWHITE_AOT_SHORTCUT_SMOKE"
+$shellSmokeEnvironmentVariable = "DESKBOXWHITE_AOT_SHELL_SMOKE"
+$mutationSmokeEnvironmentVariable = "DESKBOXWHITE_AOT_QUICK_ACCESS_MUTATION_SMOKE"
+$musicReadSmokeEnvironmentVariable = "DESKBOXWHITE_AOT_MUSIC_VOLUME_READ_SMOKE"
+$musicMutationSmokeEnvironmentVariable = "DESKBOXWHITE_AOT_MUSIC_VOLUME_MUTATION_SMOKE"
 $musicSessionMutationSmokeEnvironmentVariable =
-    "DESKBOX_AOT_MUSIC_VOLUME_SESSION_MUTATION_SMOKE"
-$managedUiSmokeEnvironmentVariable = "DESKBOX_AOT_MANAGED_UI_SMOKE"
+    "DESKBOXWHITE_AOT_MUSIC_VOLUME_SESSION_MUTATION_SMOKE"
+$managedUiSmokeEnvironmentVariable = "DESKBOXWHITE_AOT_MANAGED_UI_SMOKE"
 $repoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot ".."))
 $launcher = Join-Path $PSScriptRoot "start-aot-preview.ps1"
 $previewSessionPath = Join-Path $repoRoot ".artifacts\aot-preview\win-x64\session.json"
@@ -101,7 +101,7 @@ function Stop-ExactPreviewProcess {
         [string]$ExecutablePath
     )
 
-    @(Get-CimInstance Win32_Process -Filter "Name='DeskBox.exe'") |
+    @(Get-CimInstance Win32_Process -Filter "Name='DeskBoxWhite.exe'") |
         Where-Object {
             -not [string]::IsNullOrWhiteSpace($_.ExecutablePath) -and
             (Test-PathEqual -Left $_.ExecutablePath -Right $ExecutablePath)
@@ -139,7 +139,7 @@ if ([string]::IsNullOrWhiteSpace($DataRoot)) {
     $worktreeName = (Split-Path $repoRoot -Leaf) -replace '[^A-Za-z0-9._-]', '-'
     $pathHash = (Get-TextSha256 -Value $repoRoot.ToUpperInvariant()).Substring(0, 8)
     $DataRoot = Join-Path $env:LOCALAPPDATA (
-        "DeskBox-AotPreview\{0}-{1}-stage5b1-{2}" -f @(
+        "DeskBoxWhite-AotPreview\{0}-{1}-stage5b1-{2}" -f @(
             $worktreeName,
             $pathHash,
             $scenarioDirectoryName))

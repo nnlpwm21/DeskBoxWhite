@@ -1,4 +1,4 @@
-# DeskBox
+# DeskBoxWhite
 
 **A free, open-source Windows desktop organizer with native-feeling WinUI 3 widgets.**
 
@@ -6,28 +6,28 @@ English | [简体中文](README.zh-CN.md)
 
 > External pull requests are not being merged at this time — bug reports, ideas, and discussions are very welcome via Issues / Discussions. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-[![CI](https://github.com/Tianyu199509/DeskBox/actions/workflows/ci.yml/badge.svg)](https://github.com/Tianyu199509/DeskBox/actions/workflows/ci.yml)
-[![Release 1.5.5](https://img.shields.io/badge/release-1.5.5-2563EB.svg)](https://github.com/Tianyu199509/DeskBox/releases/tag/v1.5.5)
+[![CI](https://github.com/nnlpwm21/DeskBoxWhite/actions/workflows/ci.yml/badge.svg)](https://github.com/nnlpwm21/DeskBoxWhite/actions/workflows/ci.yml)
+[![Release 1.5.5](https://img.shields.io/badge/release-1.5.5-2563EB.svg)](https://github.com/nnlpwm21/DeskBoxWhite/releases/tag/v1.5.5)
 [![Windows 10/11](https://img.shields.io/badge/Windows-10%2F11-0078D4.svg)](#system-requirements)
 [![x64 and ARM64](https://img.shields.io/badge/architecture-x64%20%7C%20ARM64-5C2D91.svg)](#download)
 [![License: GPL v3](https://img.shields.io/badge/license-GPLv3-blue.svg)](LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/Tianyu199509/DeskBox?style=flat&color=yellow)](https://github.com/Tianyu199509/DeskBox/stargazers)
-[![Downloads](https://img.shields.io/github/downloads/Tianyu199509/DeskBox/total?style=flat&color=brightgreen)](https://github.com/Tianyu199509/DeskBox/releases)
-<a href="https://hellogithub.com/repository/Tianyu199509/DeskBox" target="_blank"><img src="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=f0cae3cb81f3496b9b6ead91194dc6f8&claim_uid=x4er8iQsXYT3aMN&theme=small" alt="Featured｜HelloGitHub" /></a>
+[![GitHub stars](https://img.shields.io/github/stars/nnlpwm21/DeskBoxWhite?style=flat&color=yellow)](https://github.com/nnlpwm21/DeskBoxWhite/stargazers)
+[![Downloads](https://img.shields.io/github/downloads/nnlpwm21/DeskBoxWhite/total?style=flat&color=brightgreen)](https://github.com/nnlpwm21/DeskBoxWhite/releases)
+<a href="https://hellogithub.com/repository/nnlpwm21/DeskBoxWhite" target="_blank"><img src="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=f0cae3cb81f3496b9b6ead91194dc6f8&claim_uid=x4er8iQsXYT3aMN&theme=small" alt="Featured｜HelloGitHub" /></a>
 
-![DeskBox Windows desktop organizer with file, todo, search, weather, and music widgets](docs/images/brand/readme-hero-1-3-7-dark-en.png)
+![DeskBoxWhite Windows desktop organizer with file, todo, search, weather, and music widgets](docs/images/brand/readme-hero-1-3-7-dark-en.png)
 
-DeskBox organizes desktop files, maps existing folders, and keeps everyday tools close without replacing Explorer or changing how your files work. Its real-folder-backed widgets make it a modern open-source alternative to tools such as Stardock Fences, while Glance, todos, quick notes, search, weather, and music controls remain useful extras rather than the product's core promise.
+DeskBoxWhite organizes desktop files, maps existing folders, and keeps everyday tools close without replacing Explorer or changing how your files work. Its real-folder-backed widgets make it a modern open-source alternative to tools such as Stardock Fences, while Glance, todos, quick notes, search, weather, and music controls remain useful extras rather than the product's core promise.
 
 ## Mica and Acrylic on the desktop
 
-DeskBox uses native-feeling Windows materials and keeps ordinary desktop files and folders in place.
+DeskBoxWhite uses native-feeling Windows materials and keeps ordinary desktop files and folders in place.
 
 | Mica | Acrylic |
 | --- | --- |
-| ![DeskBox desktop widgets with Mica material in English](docs/images/screenshots/en-us/云母材质.png) | ![DeskBox desktop widgets with Acrylic material in English](docs/images/screenshots/en-us/亚克力材质.png) |
+| ![DeskBoxWhite desktop widgets with Mica material in English](docs/images/screenshots/en-us/云母材质.png) | ![DeskBoxWhite desktop widgets with Acrylic material in English](docs/images/screenshots/en-us/亚克力材质.png) |
 
-## DeskBox at a glance
+## DeskBoxWhite at a glance
 
 | | |
 | --- | --- |
@@ -41,16 +41,16 @@ All twelve selectable languages share the same resource-key and formatting-place
 
 ## Download
 
-DeskBox 1.5.5 is prepared for release. The [GitHub Releases](https://github.com/Tianyu199509/DeskBox/releases/tag/v1.5.5) download links below will become available after publication.
+DeskBoxWhite 1.5.5 is prepared for release. The [GitHub Releases](https://github.com/nnlpwm21/DeskBoxWhite/releases/tag/v1.5.5) download links below will become available after publication.
 
-- [DeskBox 1.5.5 for x64](https://github.com/Tianyu199509/DeskBox/releases/download/v1.5.5/DeskBox_Setup_1.5.5_x64.exe), recommended for most Intel and AMD PCs.
-- [DeskBox 1.5.5 for ARM64](https://github.com/Tianyu199509/DeskBox/releases/download/v1.5.5/DeskBox_Setup_1.5.5_arm64.exe), recommended for Snapdragon, Surface Pro X, and other Windows on ARM PCs.
+- [DeskBoxWhite 1.5.5 for x64](https://github.com/nnlpwm21/DeskBoxWhite/releases/download/v1.5.5/DeskBoxWhite_Setup_1.5.5_x64.exe), recommended for most Intel and AMD PCs.
+- [DeskBoxWhite 1.5.5 for ARM64](https://github.com/nnlpwm21/DeskBoxWhite/releases/download/v1.5.5/DeskBoxWhite_Setup_1.5.5_arm64.exe), recommended for Snapdragon, Surface Pro X, and other Windows on ARM PCs.
 
 Both packages are Full Native AOT builds with the matching private Windows App Runtime 2.4, so they can install offline without downloading a separate .NET 10 or Windows App Runtime package.
 
 Every release also publishes a matching `.sha256` sidecar for each installer. The installers are currently unsigned, so verify the hash before running one if that matters to you.
 
-> DeskBox itself installs for the current user by default.
+> DeskBoxWhite itself installs for the current user by default.
 
 ## Features
 
@@ -79,12 +79,12 @@ Every release also publishes a matching `.sha256` sidecar for each installer. Th
 - Work in responsive Todo and Quick Capture list/detail layouts that switch between single- and dual-pane modes, with an adjustable master pane on wide widgets.
 - Track tasks with due dates, reminders, recurrence, color markers, Markdown notes, attachments, filters, and batch actions.
 - Save reusable text, links, images, and files in Quick Capture with pinning, paper styles, Markdown editing and preview, removable attachments, and focused editing.
-- Keep attachment files linked to their original location or copy them into DeskBox-managed storage.
+- Keep attachment files linked to their original location or copy them into DeskBoxWhite-managed storage.
 
 ### Desktop search
 
 - Search files, folders, applications, settings, notes, and todos from one popup or search widget.
-- File results come from Everything's existing local index over IPC and merge with DeskBox content in the same window. DeskBox no longer maintains a duplicate file index.
+- File results come from Everything's existing local index over IPC and merge with DeskBoxWhite content in the same window. DeskBoxWhite no longer maintains a duplicate file index.
 - Everything is detected or launched from Settings, where you can choose its executable, see connection and permission status, opt into advanced syntax, and filter low-value system and cache paths. Everything itself is not bundled and must be installed separately.
 - Use configurable filters, sortable detail columns, result limits, history, favorites, and a global search hotkey.
 - Select multiple rows with Ctrl or Shift, drag a selection rectangle with edge auto-scroll, and apply batch actions to the result set.
@@ -112,7 +112,7 @@ Every release also publishes a matching `.sha256` sidecar for each installer. Th
 
 ### Layout, displays, and performance
 
-- DeskBox stores a separate widget layout for each known monitor topology. Reconnecting a display arrangement restores the positions, sizes, group surfaces, and capsule placement saved for it. Hot-plug, work-area, and DPI changes settle before restore, and layout writes pause during the transition so temporary coordinates cannot overwrite a saved layout.
+- DeskBoxWhite stores a separate widget layout for each known monitor topology. Reconnecting a display arrangement restores the positions, sizes, group surfaces, and capsule placement saved for it. Hot-plug, work-area, and DPI changes settle before restore, and layout writes pause during the transition so temporary coordinates cannot overwrite a saved layout.
 - A replacement or differently scaled monitor receives a proportional in-bounds layout instead of leaving widgets off-screen.
 - Hold Ctrl while dragging a widget title to move every eligible widget on the current display as one bounded group. Snapping works while moving as well as resizing, with a configurable gap and screen-edge protection.
 - Choose Balanced, Resource saver, or Custom performance modes. Custom controls hidden-widget cache cleanup, visible-idle cleanup, transient-window release, icon/thumbnail/image cache budget, and individual continuous animations such as text marquee, vinyl rotation, Glance image rotation, and capsule effects.
@@ -122,7 +122,7 @@ Every release also publishes a matching `.sha256` sidecar for each installer. Th
 ### Updates, backup, and diagnostics
 
 - Check for updates in the app, read long release notes in a dedicated view, retry failed downloads, or continue from the official website.
-- Start a visible installer after DeskBox closes; upgrades reuse and lock the existing installation path instead of creating a second copy.
+- Start a visible installer after DeskBoxWhite closes; upgrades reuse and lock the existing installation path instead of creating a second copy.
 - Back up and restore settings, and export a privacy-filtered diagnostics package for troubleshooting.
 - Recover settings from resilient snapshots, flush pending changes during shutdown, and report save failures instead of silently reverting to defaults.
 
@@ -130,7 +130,7 @@ Every release also publishes a matching `.sha256` sidecar for each installer. Th
 
 - **Cloud backup to your own server.** Back up todos, quick captures, and widget styles to WebDAV on a schedule (Settings → Maintenance). Passwords live in Windows Credential Manager, each data domain toggles independently, and remote snapshots are listed for browsing and restore.
 - **Restore only what you want.** Pick the data domains to bring back — todo, quick capture, widget style — and choose merge (newer entries win, nothing on this device is deleted) or a full snapshot-faithful restore. Deletions now leave tombstones, so merged restores stop resurrecting items you removed locally.
-- **Drag-and-drop that works everywhere.** File drags out of widgets now carry the same native Shell data object Explorer uses: VS Code, browsers, and other Copy-only targets that used to reject DeskBox drags now accept them. Cross-volume transfers go through the system file-operation engine with native progress, cancellation, and conflict handling — fixing the cross-volume import that completed with "0 items".
+- **Drag-and-drop that works everywhere.** File drags out of widgets now carry the same native Shell data object Explorer uses: VS Code, browsers, and other Copy-only targets that used to reject DeskBoxWhite drags now accept them. Cross-volume transfers go through the system file-operation engine with native progress, cancellation, and conflict handling — fixing the cross-volume import that completed with "0 items".
 - **Hotkeys that heal themselves.** Windows can silently strip the low-level hooks behind the global hotkey, search hotkey, or desktop double-click activation — previously dead until restart. A health watchdog now detects and re-registers them automatically.
 - **Widgets trim idle memory during true quiet.** After a few seconds of real inactivity — no longer only when everything is hidden — widgets can release memory back to Windows, gated by absolute working-set floors and ambient-animation awareness. Controlled by the new "Trim memory when idle" option.
 - **Snap feedback got a Fluent-grade makeover.** The looping breathing glow while resizing or dragging is replaced by a crisp accent edge band that settles once and dissolves cleanly around rounded corners.
@@ -150,7 +150,7 @@ Read the complete [changelog](CHANGELOG.md) or the [1.5.4 release notes](docs/re
 
 ## What's new in 1.5.3
 
-- **Choose how DeskBox starts with Windows.** Direct installations offer standard startup by default for new users and an optional scheduled task. Existing methods are preserved, failed task registration can fall back to verified standard startup, and Windows disable choices are respected.
+- **Choose how DeskBoxWhite starts with Windows.** Direct installations offer standard startup by default for new users and an optional scheduled task. Existing methods are preserved, failed task registration can fall back to verified standard startup, and Windows disable choices are respected.
 - **Enable scheduled startup with Unicode paths.** Task definitions are read directly as Unicode, avoiding the code-page mismatch that could reject Chinese account names and installation paths.
 - **Handle notification activation in the correct order.** Notifications are registered before activation arguments are read, and early input waits for the main instance to be ready. The Store version keeps Windows StartupTask.
 - **Improve startup recovery and diagnostics.** Tray creation retries while the desktop starts, fatal initialization failures release the instance by exiting, and boolean diagnostic checks remain readable without exposing private paths.
@@ -180,31 +180,31 @@ Read the complete [changelog](CHANGELOG.md) or the [1.5.1 release notes](docs/re
 
 ## Current interface
 
-These screenshots are representative of the current DeskBox settings interface.
+These screenshots are representative of the current DeskBoxWhite settings interface.
 
 ### Settings
 
 | General | Appearance |
 | --- | --- |
-| ![DeskBox General settings in English](docs/images/screenshots/en-us/常规.png) | ![DeskBox Appearance settings in English](docs/images/screenshots/en-us/外观.png) |
+| ![DeskBoxWhite General settings in English](docs/images/screenshots/en-us/常规.png) | ![DeskBoxWhite Appearance settings in English](docs/images/screenshots/en-us/外观.png) |
 
 | Capsule mode | File widgets |
 | --- | --- |
-| ![DeskBox Capsule mode settings in English](docs/images/screenshots/en-us/胶囊模式.png) | ![DeskBox File widget settings in English](docs/images/screenshots/en-us/文件格子.png) |
+| ![DeskBoxWhite Capsule mode settings in English](docs/images/screenshots/en-us/胶囊模式.png) | ![DeskBoxWhite File widget settings in English](docs/images/screenshots/en-us/文件格子.png) |
 
 | Feature widgets | Shortcuts & interaction |
 | --- | --- |
-| ![DeskBox Feature widget settings in English](docs/images/screenshots/en-us/功能格子.png) | ![DeskBox Shortcuts and interaction settings in English](docs/images/screenshots/en-us/快捷与交互.png) |
+| ![DeskBoxWhite Feature widget settings in English](docs/images/screenshots/en-us/功能格子.png) | ![DeskBoxWhite Shortcuts and interaction settings in English](docs/images/screenshots/en-us/快捷与交互.png) |
 
 ## Local-first data and privacy
 
-DeskBox does not require an account or cloud synchronization. Widget configuration, todos, quick notes, search history, layouts, and managed files are stored locally.
+DeskBoxWhite does not require an account or cloud synchronization. Widget configuration, todos, quick notes, search history, layouts, and managed files are stored locally.
 
 Some actions intentionally use the network:
 
 - Weather requests use MSN Weather or Open-Meteo.
-- Update checks contact the DeskBox update endpoint or GitHub Releases.
-- DeskBox 1.4.8 and later Full installers carry the matching Windows App Runtime; older Direct installers download a missing runtime when needed.
+- Update checks contact the DeskBoxWhite update endpoint or GitHub Releases.
+- DeskBoxWhite 1.4.8 and later Full installers carry the matching Windows App Runtime; older Direct installers download a missing runtime when needed.
 - A remote URL dragged from a browser is downloaded only when you import it.
 
 Capsule privacy mode hides selected text in the collapsed presentation; it is a presentation control, not file encryption.
@@ -213,32 +213,32 @@ Capsule privacy mode hides selected text in the collapsed presentation; it is a 
 
 - Windows 10 version 21H2 (build 19044) or later; Windows 11 version 22H2 or later for the full visual treatment.
 - x64 or ARM64 processor matching the installer.
-- Windows App Runtime 2.4. DeskBox 1.4.8 and later Full installers include a private matching runtime, and Native AOT requires no separate .NET 10 runtime.
+- Windows App Runtime 2.4. DeskBoxWhite 1.4.8 and later Full installers include a private matching runtime, and Native AOT requires no separate .NET 10 runtime.
 
 On Windows 10, unsupported materials, rounded corners, and some animations automatically fall back to compatible visuals; file sync, drag-and-drop, and core widget behavior are validated against the compatibility floor.
 
 ## Installation, updates, and removal
 
-DeskBox uses an Inno Setup installer and installs for the current user by default. Overwrite installation preserves app settings, widget configuration, and managed storage. Older administrator-level installations under Program Files are migrated to avoid elevated-process drag-and-drop restrictions.
+DeskBoxWhite uses an Inno Setup installer and installs for the current user by default. Overwrite installation preserves app settings, widget configuration, and managed storage. Older administrator-level installations under Program Files are migrated to avoid elevated-process drag-and-drop restrictions.
 
-Startup launch is tray-first and silent. If DeskBox is already running, a second startup instance exits instead of opening another settings window.
+Startup launch is tray-first and silent. If DeskBoxWhite is already running, a second startup instance exits instead of opening another settings window.
 
-Auto-start uses a per-user Run entry, so DeskBox appears in **Settings → Apps → Startup**. Legacy scheduled-task registrations migrate automatically when it is safe to do so, and disabling DeskBox from Windows is reflected by the in-app switch.
+Auto-start uses a per-user Run entry, so DeskBoxWhite appears in **Settings → Apps → Startup**. Legacy scheduled-task registrations migrate automatically when it is safe to do so, and disabling DeskBoxWhite from Windows is reflected by the in-app switch.
 
-Uninstall offers explicit choices to keep application data or permanently remove it. Permanent removal clears `%LocalAppData%\DeskBox`, `%LocalAppData%\DeskBox-Recovery`, temporary files, and DeskBox-owned registration data; user files in the managed storage path are always preserved. Silent uninstall keeps application data unless an administrator explicitly supplies `/PURGEUSERDATA`.
+Uninstall offers explicit choices to keep application data or permanently remove it. Permanent removal clears `%LocalAppData%\DeskBoxWhite`, `%LocalAppData%\DeskBoxWhite-Recovery`, temporary files, and DeskBoxWhite-owned registration data; user files in the managed storage path are always preserved. Silent uninstall keeps application data unless an administrator explicitly supplies `/PURGEUSERDATA`.
 
 ## FAQ
 
-### Is DeskBox a Windows desktop replacement?
+### Is DeskBoxWhite a Windows desktop replacement?
 
-No. Explorer remains the desktop shell, and files remain normal files and folders. DeskBox adds independently managed widgets above the existing desktop.
+No. Explorer remains the desktop shell, and files remain normal files and folders. DeskBoxWhite adds independently managed widgets above the existing desktop.
 
-### Where does DeskBox store data?
+### Where does DeskBoxWhite store data?
 
-- App settings and widget data: `%LocalAppData%\DeskBox\data`
-- New-user managed storage: a fixed non-system drive with enough free space when available, such as `D:\DeskBox\username`; otherwise `%UserProfile%\DeskBox`
+- App settings and widget data: `%LocalAppData%\DeskBoxWhite\data`
+- New-user managed storage: a fixed non-system drive with enough free space when available, such as `D:\DeskBoxWhite\username`; otherwise `%UserProfile%\DeskBoxWhite`
 
-Both locations can be backed up from DeskBox settings.
+Both locations can be backed up from DeskBoxWhite settings.
 
 ### Which installer should I choose?
 
@@ -254,14 +254,14 @@ No. Disabling a feature closes its UI and releases runtime resources, while its 
 
 ## Build from source
 
-Development requires the .NET 10 SDK and a Windows 11 environment. Visual Studio with the Windows App SDK workload is recommended. The Rust toolchain pinned by `rust-toolchain.toml` is required when publishing with `-p:DeskBoxRustNative=true`, which is what shipping builds use for the shortcut, system volume, Quick Access, Recycle Bin, and Explorer Shell native paths.
+Development requires the .NET 10 SDK and a Windows 11 environment. Visual Studio with the Windows App SDK workload is recommended. The Rust toolchain pinned by `rust-toolchain.toml` is required when publishing with `-p:DeskBoxWhiteRustNative=true`, which is what shipping builds use for the shortcut, system volume, Quick Access, Recycle Bin, and Explorer Shell native paths.
 
 Restore, test, and build the x64 Debug version:
 
 ```powershell
-dotnet restore .\DeskBox.sln -p:Platform=x64
-dotnet test .\DeskBox.Tests\DeskBox.Tests.csproj --configuration Debug --no-restore -p:Platform=x64 -v:minimal
-dotnet build .\src\DeskBox\DeskBox.csproj --configuration Debug --no-restore -p:Platform=x64 -v:minimal
+dotnet restore .\DeskBoxWhite.sln -p:Platform=x64
+dotnet test .\DeskBoxWhite.Tests\DeskBoxWhite.Tests.csproj --configuration Debug --no-restore -p:Platform=x64 -v:minimal
+dotnet build .\src\DeskBoxWhite\DeskBoxWhite.csproj --configuration Debug --no-restore -p:Platform=x64 -v:minimal
 ```
 
 `scripts\publish-aot-retail.ps1` is the authoritative path for retail packages. It produces a Full Native AOT payload with private Windows App Runtime components, builds the matching Rust DLL, generates the install manifest used for safe upgrades, and audits the produced binaries:
@@ -271,29 +271,29 @@ dotnet build .\src\DeskBox\DeskBox.csproj --configuration Debug --no-restore -p:
 .\scripts\publish-aot-retail.ps1 -Platform ARM64
 ```
 
-The publish output is self-contained for both .NET Native AOT and Windows App SDK deployment. Do not replace this script with a bare `dotnet publish`: the installer requires the generated `DeskBox.InstallManifest.txt` to remove files owned by older payloads without touching user-created files.
+The publish output is self-contained for both .NET Native AOT and Windows App SDK deployment. Do not replace this script with a bare `dotnet publish`: the installer requires the generated `DeskBoxWhite.InstallManifest.txt` to remove files owned by older payloads without touching user-created files.
 
 With Inno Setup 6 or newer installed, compile the standard-named offline installers:
 
 ```powershell
-ISCC.exe /DDeskBoxNativeAot=1 /DDeskBoxBundledRuntime=1 /DMyAppReleaseDir=..\.artifacts\aot-retail\win-x64\publish .\installer\DeskBox.iss
-ISCC.exe /DDeskBoxNativeAot=1 /DDeskBoxBundledRuntime=1 /DMyAppReleaseDir=..\.artifacts\aot-retail\win-arm64\publish .\installer\DeskBox.arm64.iss
+ISCC.exe /DDeskBoxWhiteNativeAot=1 /DDeskBoxWhiteBundledRuntime=1 /DMyAppReleaseDir=..\.artifacts\aot-retail\win-x64\publish .\installer\DeskBoxWhite.iss
+ISCC.exe /DDeskBoxWhiteNativeAot=1 /DDeskBoxWhiteBundledRuntime=1 /DMyAppReleaseDir=..\.artifacts\aot-retail\win-arm64\publish .\installer\DeskBoxWhite.arm64.iss
 ```
 
 Expected outputs:
 
 ```text
-Output\DeskBox_Setup_1.4.8_x64.exe
-Output\DeskBox_Setup_1.4.8_arm64.exe
+Output\DeskBoxWhite_Setup_1.4.8_x64.exe
+Output\DeskBoxWhite_Setup_1.4.8_arm64.exe
 ```
 
 ## Project layout
 
 ```text
-src\DeskBox                 WinUI 3 application (widget shell, services, views)
-src\DeskBox.Updater         direct-release updater helper
+src\DeskBoxWhite                 WinUI 3 application (widget shell, services, views)
+src\DeskBoxWhite.Updater         direct-release updater helper
 native                      Rust native layer, Shell ABI, and thumbnail proxy
-tests\DeskBox.Tests         service, policy, and AOT contract tests
+tests\DeskBoxWhite.Tests         service, policy, and AOT contract tests
 scripts                     build, publish, audit, and memory measurement scripts
 installer                   x64/ARM64 Inno Setup scripts
 docs\architecture           current architecture, native ABI contracts, AOT stages
@@ -305,7 +305,7 @@ docs\releases               release copy and test checklists
 
 ## Feedback and localization
 
-DeskBox is currently developed and maintained by a solo developer. External pull requests are not being accepted at this stage so the project can keep a consistent architecture and clear copyright boundaries, but bug reports, feature requests, translations, and UI/UX feedback are welcome through [GitHub Issues](https://github.com/Tianyu199509/DeskBox/issues).
+DeskBoxWhite is currently developed and maintained by a solo developer. External pull requests are not being accepted at this stage so the project can keep a consistent architecture and clear copyright boundaries, but bug reports, feature requests, translations, and UI/UX feedback are welcome through [GitHub Issues](https://github.com/nnlpwm21/DeskBoxWhite/issues).
 
 Special thanks to [@magisph](https://github.com/magisph) for the Brazilian Portuguese localization.
 
@@ -314,14 +314,15 @@ You can also visit [deskbox.fun](https://deskbox.fun) or use the contact informa
 ## Author and license
 
 - Developer: Tianyu Zhu
-- Repository: <https://github.com/Tianyu199509/DeskBox>
+- Maintainer: Qin Bozhen
+- Repository: <https://github.com/nnlpwm21/DeskBoxWhite>
 - License: [GPL-3.0-only](LICENSE)
 
-Earlier DeskBox versions already published under the MIT License remain available under that license. The change is not retroactive.
+Earlier DeskBoxWhite versions already published under the MIT License remain available under that license. The change is not retroactive.
 
 
 ## Star history
 
-If DeskBox helps you, a star ⭐ is a big encouragement for this solo project.
+If DeskBoxWhite helps you, a star ⭐ is a big encouragement for this solo project.
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Tianyu199509/DeskBox&type=Date)](https://star-history.com/#Tianyu199509/DeskBox&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=nnlpwm21/DeskBoxWhite&type=Date)](https://star-history.com/#nnlpwm21/DeskBoxWhite&Date)

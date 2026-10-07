@@ -24,15 +24,15 @@ if ($ProbeOnly.IsPresent) {
         throw "CRT memory probe requires an existing absolute DLL path."
     }
 
-    if (-not ("DeskBoxCrtIsolatedProbe" -as [type])) {
+    if (-not ("DeskBoxWhiteCrtIsolatedProbe" -as [type])) {
         Add-Type -TypeDefinition @"
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 
-public sealed class DeskBoxCrtProbeContract
+public sealed class DeskBoxWhiteCrtProbeContract
 {
-    public DeskBoxCrtProbeContract(uint nativeAbi, ulong capabilities)
+    public DeskBoxWhiteCrtProbeContract(uint nativeAbi, ulong capabilities)
     {
         NativeAbi = nativeAbi;
         Capabilities = capabilities;
@@ -42,7 +42,7 @@ public sealed class DeskBoxCrtProbeContract
     public ulong Capabilities { get; private set; }
 }
 
-public static class DeskBoxCrtIsolatedProbe
+public static class DeskBoxWhiteCrtIsolatedProbe
 {
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate uint UInt32Probe();
@@ -81,14 +81,14 @@ public static class DeskBoxCrtIsolatedProbe
         return value;
     }
 
-    public static DeskBoxCrtProbeContract LoadAndProbe(string nativePath)
+    public static DeskBoxWhiteCrtProbeContract LoadAndProbe(string nativePath)
     {
         IntPtr native = Load(nativePath);
         var nativeAbi = (UInt32Probe)Marshal.GetDelegateForFunctionPointer(
-            Export(native, "deskbox_native_abi_version"), typeof(UInt32Probe));
+            Export(native, "deskboxwhite_native_abi_version"), typeof(UInt32Probe));
         var capabilities = (UInt64Probe)Marshal.GetDelegateForFunctionPointer(
-            Export(native, "deskbox_native_capabilities"), typeof(UInt64Probe));
-        return new DeskBoxCrtProbeContract(nativeAbi(), capabilities());
+            Export(native, "deskboxwhite_native_capabilities"), typeof(UInt64Probe));
+        return new DeskBoxWhiteCrtProbeContract(nativeAbi(), capabilities());
     }
 }
 "@
@@ -101,7 +101,7 @@ public static class DeskBoxCrtIsolatedProbe
     $process.Refresh()
     $privateBefore = $process.PrivateMemorySize64
     $workingSetBefore = $process.WorkingSet64
-    $contract = [DeskBoxCrtIsolatedProbe]::LoadAndProbe(
+    $contract = [DeskBoxWhiteCrtIsolatedProbe]::LoadAndProbe(
         [System.IO.Path]::GetFullPath($NativeDll))
     [System.Threading.Thread]::Sleep(100)
     $process.Refresh()
@@ -132,14 +132,14 @@ else {
 $cargoRoot = Join-Path $repoRoot ".artifacts\cargo\rust-crt-stage7c0"
 $summaryPath = Join-Path $outputRoot "rust-crt-stage7c0-evidence.json"
 $nativeBuildScript = Join-Path $PSScriptRoot "build-rust-native.ps1"
-$testProject = Join-Path $repoRoot "tests\DeskBox.Tests\DeskBox.Tests.csproj"
+$testProject = Join-Path $repoRoot "tests\DeskBoxWhite.Tests\DeskBoxWhite.Tests.csproj"
 $hostExecutable = (Get-Process -Id $PID).Path
 $processArchitecture =
     [System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture.ToString()
 $osArchitecture =
     [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString()
 
-function Invoke-DeskBoxCrtBuild {
+function Invoke-DeskBoxWhiteCrtBuild {
     param(
         [Parameter(Mandatory)]
         [string]$Script,
@@ -174,7 +174,7 @@ function Invoke-DeskBoxCrtBuild {
     return $results[0]
 }
 
-function Get-DeskBoxCrtModuleEvidence {
+function Get-DeskBoxWhiteCrtModuleEvidence {
     param(
         [Parameter(Mandatory)]
         [psobject]$Build
@@ -206,7 +206,7 @@ function Get-DeskBoxCrtModuleEvidence {
     }
 }
 
-function Get-DeskBoxMedian {
+function Get-DeskBoxWhiteMedian {
     param(
         [Parameter(Mandatory)]
         [long[]]$Values
@@ -225,7 +225,7 @@ function Get-DeskBoxMedian {
         ([double]$ordered[$middle - 1] + [double]$ordered[$middle]) / 2.0)
 }
 
-function Invoke-DeskBoxCrtMemoryProbe {
+function Invoke-DeskBoxWhiteCrtMemoryProbe {
     param(
         [Parameter(Mandatory)]
         [string]$NativePath
@@ -265,14 +265,14 @@ function Invoke-DeskBoxCrtMemoryProbe {
     return [ordered]@{
         measurement = "isolated-host-process-load-and-abi-delta"
         rounds = $rounds
-        medianPrivateDeltaBytes = Get-DeskBoxMedian -Values @(
+        medianPrivateDeltaBytes = Get-DeskBoxWhiteMedian -Values @(
             $rounds | ForEach-Object { [long]$_.privateDeltaBytes })
-        medianWorkingSetDeltaBytes = Get-DeskBoxMedian -Values @(
+        medianWorkingSetDeltaBytes = Get-DeskBoxWhiteMedian -Values @(
             $rounds | ForEach-Object { [long]$_.workingSetDeltaBytes })
     }
 }
 
-function Invoke-DeskBoxStaticProductTests {
+function Invoke-DeskBoxWhiteStaticProductTests {
     param(
         [Parameter(Mandatory)]
         [string]$Platform
@@ -282,18 +282,18 @@ function Invoke-DeskBoxStaticProductTests {
     $resultDirectory = Join-Path $outputRoot "$($Platform.ToLowerInvariant())\static-product-tests"
     New-Item -ItemType Directory -Path $resultDirectory -Force | Out-Null
     $filter = if ($Platform -eq "ARM64") {
-        "FullyQualifiedName~DeskBox.Tests.Arm64NativeRuntimeGateTests"
+        "FullyQualifiedName~DeskBoxWhite.Tests.Arm64NativeRuntimeGateTests"
     }
     else {
-        "FullyQualifiedName=DeskBox.Tests.ShortcutNativeDifferentialTests.LoaderReadsCurrentAbiAndAllStage3C2Capabilities"
+        "FullyQualifiedName=DeskBoxWhite.Tests.ShortcutNativeDifferentialTests.LoaderReadsCurrentAbiAndAllStage3C2Capabilities"
     }
     $previousGate = [Environment]::GetEnvironmentVariable(
-        "DESKBOX_REQUIRE_ARM64_RUNTIME_GATE",
+        "DESKBOXWHITE_REQUIRE_ARM64_RUNTIME_GATE",
         "Process")
     try {
         if ($Platform -eq "ARM64") {
             [Environment]::SetEnvironmentVariable(
-                "DESKBOX_REQUIRE_ARM64_RUNTIME_GATE",
+                "DESKBOXWHITE_REQUIRE_ARM64_RUNTIME_GATE",
                 "1",
                 "Process")
         }
@@ -302,7 +302,7 @@ function Invoke-DeskBoxStaticProductTests {
             "--configuration", "Release",
             "-p:Platform=$Platform",
             "-p:RuntimeIdentifier=$runtimeIdentifier",
-            "-p:DeskBoxRustCrtLinkage=Static",
+            "-p:DeskBoxWhiteRustCrtLinkage=Static",
             "-p:WindowsAppSdkBootstrapInitialize=false",
             "--results-directory", $resultDirectory,
             "--logger", "trx;LogFileName=static-product-$($Platform.ToLowerInvariant()).trx",
@@ -319,7 +319,7 @@ function Invoke-DeskBoxStaticProductTests {
     }
     finally {
         [Environment]::SetEnvironmentVariable(
-            "DESKBOX_REQUIRE_ARM64_RUNTIME_GATE",
+            "DESKBOXWHITE_REQUIRE_ARM64_RUNTIME_GATE",
             $previousGate,
             "Process")
     }
@@ -371,13 +371,13 @@ foreach ($platform in $Platforms) {
         $linkageKey = $linkage.ToLowerInvariant()
         $variantRoot = Join-Path $outputRoot "$($platform.ToLowerInvariant())\$linkageKey"
         $cargoOutput = Join-Path $cargoRoot "$($platform.ToLowerInvariant())\$linkageKey"
-        $nativeBuild = Invoke-DeskBoxCrtBuild `
+        $nativeBuild = Invoke-DeskBoxWhiteCrtBuild `
             -Script $nativeBuildScript `
             -Platform $platform `
             -Linkage $linkage `
             -ModuleOutput (Join-Path $variantRoot "native") `
             -CargoOutput $cargoOutput
-        $nativeEvidence = Get-DeskBoxCrtModuleEvidence -Build $nativeBuild
+        $nativeEvidence = Get-DeskBoxWhiteCrtModuleEvidence -Build $nativeBuild
         $runtimeImports = @($nativeEvidence.vcRuntimeImports | Sort-Object -Unique)
         if ($linkage -eq "Dynamic" -and $runtimeImports.Count -eq 0) {
             throw "$platform dynamic CRT baseline does not expose a VC runtime dependency; A/B contract is inconclusive."
@@ -398,7 +398,7 @@ foreach ($platform in $Platforms) {
             moduleImageBytes = [long]$nativeEvidence.imageBytes
             vcRuntimeImports = $runtimeImports
             memory = if ($matchingRuntime) {
-                Invoke-DeskBoxCrtMemoryProbe `
+                Invoke-DeskBoxWhiteCrtMemoryProbe `
                     -NativePath $nativeEvidence.path
             }
             else {
@@ -432,7 +432,7 @@ foreach ($platform in $Platforms) {
             boundedBelowOneMiB = $staticIsBounded
         }
         productTests = if ($matchingRuntime) {
-            Invoke-DeskBoxStaticProductTests -Platform $platform
+            Invoke-DeskBoxWhiteStaticProductTests -Platform $platform
         }
         else {
             $null
@@ -451,7 +451,7 @@ $matchingPlatforms = @(
 $productionDecision = "Pending"
 $finishedUtc = [DateTime]::UtcNow
 $evidence = [ordered]@{
-    schema = "deskbox.rust-crt-stage7c0-evidence.v1"
+    schema = "deskboxwhite.rust-crt-stage7c0-evidence.v1"
     status = "passed"
     evidenceLevel = "architecture-aware-crt-ab"
     startedUtc = $startedUtc.ToString("O")

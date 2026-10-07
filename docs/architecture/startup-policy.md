@@ -1,4 +1,4 @@
-# DeskBox 自启策略与验证
+# DeskBoxWhite 自启策略与验证
 
 ## 产品行为
 

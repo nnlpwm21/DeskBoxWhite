@@ -1,14 +1,14 @@
-# DeskBox 文件拖拽与叠放交互契约
+# DeskBoxWhite 文件拖拽与叠放交互契约
 
 本文记录 `FileSurfaceContent` 中“文件拖拽、格子排序、叠放成员关系、真实文件传输”之间的边界。它既是当前实现说明，也是以后修改拖拽代码时的回归清单。
 
-当前安全基线：2026-09-29 方案 B（容器 `CanDrag`/`StartDragAsync` 发起 + 源守卫数据对象）。普通文件对外公告 `Copy | Move`（`AllowedOperations`）且 `RequestedOperation=None`；拖到桌面/Explorer 由 Shell 按自己的同盘移动/跨盘复制语义执行。DeskBox 自身永不依据完成回执删除原件：守卫包装层吞掉所有完成回执，源端只按"文件确实消失"做显示协调。内部整理的逻辑意图与 OLE 回执分开。范围、验证和批次细节见 [文件拖出原件保护](file-drag-source-safety-20260929.md)。第 8 节保留历史故障记录，其中旧 Move/多位方案不再是当前实现。
+当前安全基线：2026-09-29 方案 B（容器 `CanDrag`/`StartDragAsync` 发起 + 源守卫数据对象）。普通文件对外公告 `Copy | Move`（`AllowedOperations`）且 `RequestedOperation=None`；拖到桌面/Explorer 由 Shell 按自己的同盘移动/跨盘复制语义执行。DeskBoxWhite 自身永不依据完成回执删除原件：守卫包装层吞掉所有完成回执，源端只按"文件确实消失"做显示协调。内部整理的逻辑意图与 OLE 回执分开。范围、验证和批次细节见 [文件拖出原件保护](file-drag-source-safety-20260929.md)。第 8 节保留历史故障记录，其中旧 Move/多位方案不再是当前实现。
 
 ## 1. 最重要的结论
 
-DeskBox 的文件拖拽分为两类，绝不能混为一套操作：
+DeskBoxWhite 的文件拖拽分为两类，绝不能混为一套操作：
 
-1. **内部编排**：同一个格子内调整顺序、加入叠放、移出叠放、叠放成员排序、叠放整体排序。它只修改 DeskBox 的投影和持久化元数据，不移动、复制或删除磁盘文件。
+1. **内部编排**：同一个格子内调整顺序、加入叠放、移出叠放、叠放成员排序、叠放整体排序。它只修改 DeskBoxWhite 的投影和持久化元数据，不移动、复制或删除磁盘文件。
 2. **文件系统传输**：桌面/资源管理器与格子之间、不同格子之间的文件拖放。它会执行真实的复制、移动或创建快捷方式，并在完成后刷新源格子和目标格子。
 
 内部编排的 `DragOver` 反馈与 `Drop` 完成都永远不能返回 `Move`——文件拖拽对外公告 `Copy | Move`，内部路由始终可用 `Copy`（叠放用 `Link`）作反馈，不需要任何临时 `Move`。这是避免 `.lnk` 被 Shell 当成“源文件移动完成”后清理进回收站的核心约束。
@@ -17,10 +17,10 @@ DeskBox 的文件拖拽分为两类，绝不能混为一套操作：
 
 外部映射格子允许使用严格的父子目录，但这不会放宽文件传输安全边界：
 
-- 相同物理目录不能同时作为两个格子的映射根；DeskBox 托管收纳目录也不能与任何外部映射重叠；
+- 相同物理目录不能同时作为两个格子的映射根；DeskBoxWhite 托管收纳目录也不能与任何外部映射重叠；
 - 目录复制或移动的目标不能等于源目录，也不能位于源目录的物理后代中；判断必须解析 junction、符号链接和其他路径别名，无法确认物理身份时按不安全处理；
 - 若源项目已经直接位于有效目标目录中，根表面和叠放导入必须逐项跳过，不能通过自动改名生成 `(2)` 副本；整批均已位于目标目录时提前作为无操作处理，混合来源批次继续传输其余项目；拖入不同的子文件夹卡片仍属于有效文件传输；
-- DeskBox 的托管递归复制不能跟随目录 junction 或符号链接，也必须记录已经访问过的物理源目录，防止回指祖先的目录图生成无界嵌套副本；
+- DeskBoxWhite 的托管递归复制不能跟随目录 junction 或符号链接，也必须记录已经访问过的物理源目录，防止回指祖先的目录图生成无界嵌套副本；
 - 交给现代 Windows Shell 的交互式传输不得启用 `FOFX_NOSKIPJUNCTIONS`，保留 Shell 默认跳过 junction 的行为；
 - 格子内打开子文件夹只切换当前浏览路径和监听目标，不创建新格子、不复制目录，也不会递归打开所有后代；同一时刻每个格子只维护当前目录的内容投影；
 - 文件夹 `.lnk` 只有在目标可解析为映射根同一物理目录树内的现存文件夹时，才复用格子内导航；目标就是当前目录时，格子内没有可见的导航结果，必须回退 Windows Shell 打开原始 `.lnk`。失效、外部目录、相对路径、Shell 特殊目标或物理身份无法确认时也继续交给 Windows Shell。该快捷方式始终保留文件身份，拖拽、复制、移动和叠放使用 `.lnk` 自身路径，禁止替换成目标目录；
@@ -61,18 +61,18 @@ DeskBox 的文件拖拽分为两类，绝不能混为一套操作：
 
 弹窗是独立窗口，因此判断鼠标是否仍在弹窗内时，必须使用弹窗自己的窗口句柄和坐标系，不能使用主格子的 `_hostWindowHandle`。
 
-## 3. DeskBox 拖拽载荷
+## 3. DeskBoxWhite 拖拽载荷
 
-文件拖拽由 `FileItemDragPackage.TryPrepare` 统一创建。除系统标准格式外，DeskBox 在 `DataPackage.Properties` 中写入自己的协议字段：
+文件拖拽由 `FileItemDragPackage.TryPrepare` 统一创建。除系统标准格式外，DeskBoxWhite 在 `DataPackage.Properties` 中写入自己的协议字段：
 
 | 字段 | 含义 |
 | --- | --- |
-| `DeskBoxSourceWidgetId` | 源格子 ID；用来区分同格编排和跨格传输 |
-| `DeskBoxSourcePaths` | 本次拖拽的完整、去重、规范化路径集合 |
-| `DeskBoxInternalDragToken` | 当前文件拖拽协议标记 `DeskBox.WidgetItemDrag.v2` |
-| `DeskBoxDragSessionId` | 每次拖拽唯一 GUID；约束缓存不能跨会话复用 |
-| `DeskBoxStackReorderKey` | 拖动叠放卡片整体排序时的叠放键 |
-| `DeskBoxSourceStackKey` | 从叠放弹窗拖出成员时的源叠放键 |
+| `DeskBoxWhiteSourceWidgetId` | 源格子 ID；用来区分同格编排和跨格传输 |
+| `DeskBoxWhiteSourcePaths` | 本次拖拽的完整、去重、规范化路径集合 |
+| `DeskBoxWhiteInternalDragToken` | 当前文件拖拽协议标记 `DeskBoxWhite.WidgetItemDrag.v2` |
+| `DeskBoxWhiteDragSessionId` | 每次拖拽唯一 GUID；约束缓存不能跨会话复用 |
+| `DeskBoxWhiteStackReorderKey` | 拖动叠放卡片整体排序时的叠放键 |
+| `DeskBoxWhiteSourceStackKey` | 从叠放弹窗拖出成员时的源叠放键 |
 
 文件载荷还会提供以下一种系统数据形式：
 
@@ -105,11 +105,11 @@ DeskBox 的文件拖拽分为两类，绝不能混为一套操作：
 - `RequestedOperation`：偏好的唯一载体，只对 Windows 11 有意义（跟随 → `None`，移动 → `Move`，复制 → `Copy`）。早期"None 使 Win10 不弹菜单"的说法已于 2026-10-01 实测证伪：弹菜单的判定在允许集，不在偏好位。
 - XAML 把 `Copy|Move|Link` 三者全选视为"无偏好"而跳过写入，因此 `Link` 目前不对外公告；Alt 拖出创建快捷方式与任务栏固定暂不支持。
 
-`FileDragSourceGuardDataObject` 包装原生 Shell 对象：Preferred DropEffect 由包装层原样存储与回答（内层 Shell 对象不接受该格式的 `SetData`），Performed/Logical Performed DropEffect、Paste Succeeded、TargetCLSID 等完成回执被消费并仅记录日志，永不抵达内层对象。DeskBox 不根据 `DropResult` 或任何回执删除源文件；当目标按公告的 `Move` 自行执行移动时，由目标（如 Explorer）完成源端处理，这与从资源管理器拖出的原生语义一致。StorageItems 回退仍是 readOnly 语义（对外同样公告 `Copy | Move`，目标自己决定）。
+`FileDragSourceGuardDataObject` 包装原生 Shell 对象：Preferred DropEffect 由包装层原样存储与回答（内层 Shell 对象不接受该格式的 `SetData`），Performed/Logical Performed DropEffect、Paste Succeeded、TargetCLSID 等完成回执被消费并仅记录日志，永不抵达内层对象。DeskBoxWhite 不根据 `DropResult` 或任何回执删除源文件；当目标按公告的 `Move` 自行执行移动时，由目标（如 Explorer）完成源端处理，这与从资源管理器拖出的原生语义一致。StorageItems 回退仍是 readOnly 语义（对外同样公告 `Copy | Move`，目标自己决定）。
 
-DeskBox 私有文件载荷的移动/快捷方式意图由目标端自行执行；内部编排反馈优先 `Copy`/`Link`（Win10 单值 Move 允许集下允许临时 `Move` 反馈，仅 DragOver），完成仍返回 `None` 防止二次清理。便签/待办关联也采用可协商的 `Copy` 回执。
+DeskBoxWhite 私有文件载荷的移动/快捷方式意图由目标端自行执行；内部编排反馈优先 `Copy`/`Link`（Win10 单值 Move 允许集下允许临时 `Move` 反馈，仅 DragOver），完成仍返回 `None` 防止二次清理。便签/待办关联也采用可协商的 `Copy` 回执。
 
-非文件格子的内容导出拖拽（待办条目文本、快速记录条目含附件 `StorageItems`）一律 `RequestedOperation = Copy` 单值：导出语义本来就是复制——公告 Move 在 Win10 上弹选择框，且 Explorer 真执行 Move 会把附件文件搬出受管存储。这些拖拽的内部目标（tab 拖放、行内排序）原本接受 `Move`，现经 `DeskBoxDragData.ResolveInternalMetadataOperation` 按实际允许集回退。文件拖拽落到待办/快速记录/紧凑宿主时的接受值走 `GetFileAssociationOperation(dataView, e.AllowedOperations)`——内部拖拽在 Win10 单值 Move 下同样回退到 `Move` 才能路由。
+非文件格子的内容导出拖拽（待办条目文本、快速记录条目含附件 `StorageItems`）一律 `RequestedOperation = Copy` 单值：导出语义本来就是复制——公告 Move 在 Win10 上弹选择框，且 Explorer 真执行 Move 会把附件文件搬出受管存储。这些拖拽的内部目标（tab 拖放、行内排序）原本接受 `Move`，现经 `DeskBoxWhiteDragData.ResolveInternalMetadataOperation` 按实际允许集回退。文件拖拽落到待办/快速记录/紧凑宿主时的接受值走 `GetFileAssociationOperation(dataView, e.AllowedOperations)`——内部拖拽在 Win10 单值 Move 下同样回退到 `Move` 才能路由。
 
 ### 4.2 为什么反馈策略与完成策略必须分开
 
@@ -135,21 +135,21 @@ DeskBox 私有文件载荷的移动/快捷方式意图由目标端自行执行�
 | 叠放卡片 | 同格主表面 | `StackReorderKey` 对应的表面排序 | 否 | 是 | 只调整显示单元顺序 |
 | 桌面/Explorer | 格子主表面 | 外部导入 | 是 | 可能 | 按映射目录与用户策略复制/移动/创建快捷方式 |
 | 桌面/Explorer | 叠放 | 先外部导入，再加入叠放 | 是 | 是 | 只有成功导入的新项才加入叠放 |
-| 其他格子 | 本格主表面/叠放 | 跨格文件传输 | 是 | 可能 | 目标完成传输后通知源格子；DeskBox 源不再由 Shell 二次清理 |
+| 其他格子 | 本格主表面/叠放 | 跨格文件传输 | 是 | 可能 | 目标完成传输后通知源格子；DeskBoxWhite 源不再由 Shell 二次清理 |
 | Explorer/其他格子 | 已经直接包含源项目的物理目录 | `same-directory` 无操作 | 否 | 否 | 不生成编号副本，不通知源格子移出 |
 | 任意目录 | 目录自身或其物理后代 | `unsafe-folder-transfer` | 否 | 否 | 在创建目标目录前拒绝；解析失败也拒绝 |
-| 主表面/弹窗成员 | 桌面、Explorer 或其他应用 | Shell 外部拖出 | 可能 | 随刷新清理 | 源端公告 `Copy \| Move`、不给偏好；目标自行决定执行复制或原生移动，DeskBox 只按磁盘存在性协调源集合，永不代删 |
+| 主表面/弹窗成员 | 桌面、Explorer 或其他应用 | Shell 外部拖出 | 可能 | 随刷新清理 | 源端公告 `Copy \| Move`、不给偏好；目标自行决定执行复制或原生移动，DeskBoxWhite 只按磁盘存在性协调源集合，永不代删 |
 | 任意文件 | 子文件夹卡片 | 文件夹传输目标 | 是 | 否 | 子目标优先于根表面排序，不能被插入线抢走 |
 
 ### 5.1 同格与跨格的判定
 
-同时满足协议 token、源格子 ID 等于当前目标格子 ID，并且存在路径或叠放键时，才是 `IsInternalReorder`。源格子不同，即使载荷来自 DeskBox，也必须走真实文件导入/传输路径。
+同时满足协议 token、源格子 ID 等于当前目标格子 ID，并且存在路径或叠放键时，才是 `IsInternalReorder`。源格子不同，即使载荷来自 DeskBoxWhite，也必须走真实文件导入/传输路径。
 
 ### 5.2 跨格移动为什么最终也可能返回 None
 
-跨格传输由目标格子实际执行文件移动，并通过 `NotifyItemsMovedOutAsync` 告知源格子哪些路径成功。对于 DeskBox 自己的原生 Shell 载荷，再向源端返回 `Move` 会形成第二次源清理。因此 `ResolveSafeDropCompletionOperation` 在“DeskBox 来源 + 目标已完成真实移动”时返回 `None`；目标完成通知和后续磁盘协调才是事实依据。
+跨格传输由目标格子实际执行文件移动，并通过 `NotifyItemsMovedOutAsync` 告知源格子哪些路径成功。对于 DeskBoxWhite 自己的原生 Shell 载荷，再向源端返回 `Move` 会形成第二次源清理。因此 `ResolveSafeDropCompletionOperation` 在“DeskBoxWhite 来源 + 目标已完成真实移动”时返回 `None`；目标完成通知和后续磁盘协调才是事实依据。
 
-非 DeskBox 来源只有在请求移动数与实际完成数完全一致时才返回 `Move`。部分完成、取消或失败必须返回 `None`。
+非 DeskBoxWhite 来源只有在请求移动数与实际完成数完全一致时才返回 `Move`。部分完成、取消或失败必须返回 `None`。
 
 ## 6. 事件链与状态清理
 
@@ -222,9 +222,9 @@ WinUI 的拖拽完成时刻可能晚于物理鼠标松开。2026-09-04 的两次
 
 ### 8.1.1 格子拖出的文件微信能收，Electron 应用（WorkBuddy）和游戏收不到
 
-根因一：`RequestedOperation=Move` 在 `ListViewBase` 项目拖拽中就是对外允许集合。用一个只回答 `Copy` 的 WinForms 探针验证：DeskBox 拖出时 `AllowedEffect=Move`、`CF_HDROP` 可读，但没有 `Drop`；资源管理器拖出同一文件为 `Copy, Move, Link` 且 `Drop` 正常。日志表现为 `stage=SourceCompleted ... dropResult=None`，且 `stage=SourceStarting` 从未出现。
+根因一：`RequestedOperation=Move` 在 `ListViewBase` 项目拖拽中就是对外允许集合。用一个只回答 `Copy` 的 WinForms 探针验证：DeskBoxWhite 拖出时 `AllowedEffect=Move`、`CF_HDROP` 可读，但没有 `Drop`；资源管理器拖出同一文件为 `Copy, Move, Link` 且 `Drop` 正常。日志表现为 `stage=SourceCompleted ... dropResult=None`，且 `stage=SourceStarting` 从未出现。
 
-根因二：载荷里的 `SetText(路径)` 被 Chromium 映射成 `text/plain` + `text/uri-list`，WorkBuddy 拖放区据此不再按文件处理（用一个打印 `dataTransfer.types` 的网页验证：DeskBox 为 `[text/plain, text/uri-list, Files]`，资源管理器为 `[Files]`）。
+根因二：载荷里的 `SetText(路径)` 被 Chromium 映射成 `text/plain` + `text/uri-list`，WorkBuddy 拖放区据此不再按文件处理（用一个打印 `dataTransfer.types` 的网页验证：DeskBoxWhite 为 `[text/plain, text/uri-list, Files]`，资源管理器为 `[Files]`）。
 
 正确做法：普通文件走原生 Shell 载荷 + `FileDragSourceGuardDataObject`，`AllowedOperations=Copy | Move`、`RequestedOperation=None`；文件拖拽不再写入文本格式。
 
@@ -237,7 +237,7 @@ WinUI 的拖拽完成时刻可能晚于物理鼠标松开。2026-09-04 的两次
 | 轮次 | 方案 | 结果 |
 |---|---|---|
 | 1 | UI 线程同步 DoDragDrop | 饿死：`QueryContinueDrag` 零调用、永不返回、持有系统级 OLE 拖拽锁（全系统拖拽失效，杀进程恢复） |
-| 2 | 专职 STA 线程（`DeskBox-NativeDragLoop` + OleInitialize） | 同样饿死 |
+| 2 | 专职 STA 线程（`DeskBoxWhite-NativeDragLoop` + OleInitialize） | 同样饿死 |
 | 3 | UI 线程 `ReleaseCapture()` 后再起（API 返回 True） | 同样饿死——线程捕获确实释放了，输入仍不进循环 |
 
 **机制定论**：`DragItemsStarting.Cancel` 只取消 WinUI 会话，指针按住期间 **XAML 输入岛独占鼠标输入流且不走 Win32 capture 路由**（ReleaseCapture 成功仍饿死是直接证据）——DoDragDrop 的模态循环无论跑在哪个线程都拿不到输入。`SHDoDragDrop` 同理被否决（内部同样基于 DoDragDrop，输入模型相同）。这是 WinUI 输入架构与 WinForms/WPF 的本质差异，后两者自起拖拽的先例不适用。
@@ -248,7 +248,7 @@ WinUI 的拖拽完成时刻可能晚于物理鼠标松开。2026-09-04 的两次
 
 #### 8.1.1a 未文档化假设与探针结论（2026-09-20）
 
-- `CoGetCallerTID` 官方文档只覆盖"正在服务 COM 调用"两态：S_OK=同进程调用方、S_FALSE=跨进程调用方（跨机器也是 S_FALSE）。**未文档化的"无 COM 调用上下文"实测返回 S_OK 且 tid=0**（裸线程与已初始化 MTA 均如此，见 `tests/DeskBox.Tests/CoGetCallerTidProbeTests.cs`）——因此进程内直调（WinUI 掩码推导、内部直调）不会被误判为跨进程，`S_FALSE` 的唯一来源就是真跨进程调用。探针以契约测试形式锁定；WinAppSDK 升级后若拖拽允许集合异常，先跑该测试与 verbose 日志（`[DragStart] Preferred DropEffect read in-process`）定位。
+- `CoGetCallerTID` 官方文档只覆盖"正在服务 COM 调用"两态：S_OK=同进程调用方、S_FALSE=跨进程调用方（跨机器也是 S_FALSE）。**未文档化的"无 COM 调用上下文"实测返回 S_OK 且 tid=0**（裸线程与已初始化 MTA 均如此，见 `tests/DeskBoxWhite.Tests/CoGetCallerTidProbeTests.cs`）——因此进程内直调（WinUI 掩码推导、内部直调）不会被误判为跨进程，`S_FALSE` 的唯一来源就是真跨进程调用。探针以契约测试形式锁定；WinAppSDK 升级后若拖拽允许集合异常，先跑该测试与 verbose 日志（`[DragStart] Preferred DropEffect read in-process`）定位。
 - 官方明示 `CoGetCallerTID` 返回信息可被伪造、不得用于安全决策。本用途是 UX 级格式过滤（隐藏与否均不构成提权面），非安全边界。
 - 包装器对象由 `FileDragSourceGuardDataObject` 内静态单槽显式持有到下一场拖拽，CCW 生存不再单独依赖 WinUI `IDataObjectProvider` 未文档化的 AddRef 合约。
 - 行为决策记录（已随 StartDragAsync 方案收敛）：不再写 Preferred DropEffect，拖出到资源管理器的默认操作与 Explorer 原生拖拽一致——同卷移动、跨卷复制；包装层不再做跨进程格式隐藏，`CoGetCallerTID` 从拖拽路径移除（探针测试保留作回归）。目标按公告的 `Move` 自行完成移动时，Ctrl+Z 是"撤销移动"，文件回到原处。
@@ -264,7 +264,7 @@ WinUI 的拖拽完成时刻可能晚于物理鼠标松开。2026-09-04 的两次
 
 根因：为了避免 `Move`，目标只接受 `Link`/`Copy`；但 `ListViewBase` 内置拖拽实际只向目标暴露 `Move`（`AllowedOperations` 不生效），于是 WinUI 不再路由 `Drop`。`StartDragAsync` 发起后内部目标始终能看到 `Copy`，临时 `Move` 通道随之删除。
 
-正确做法：拆分“反馈操作”和“完成操作”，并且只对已识别的 DeskBox 内部载荷在反馈阶段接受 `Move`。
+正确做法：拆分“反馈操作”和“完成操作”，并且只对已识别的 DeskBoxWhite 内部载荷在反馈阶段接受 `Move`。
 
 ### 8.4 插入高亮出现，松开鼠标却没有排序
 
@@ -292,7 +292,7 @@ WinUI 的拖拽完成时刻可能晚于物理鼠标松开。2026-09-04 的两次
 
 ## 9. 一定不要踩的坑
 
-1. 文件源对外公告 `Copy | Move`、不给偏好；DeskBox 永不根据 `DropResult` 或完成回执删除源文件。内部文件移动由目标服务执行，不通过 OLE 回执授权源端删除；不要把"目标按公告 Move 自行移动"与"DeskBox 代删"混为一谈。
+1. 文件源对外公告 `Copy | Move`、不给偏好；DeskBoxWhite 永不根据 `DropResult` 或完成回执删除源文件。内部文件移动由目标服务执行，不通过 OLE 回执授权源端删除；不要把"目标按公告 Move 自行移动"与"DeskBoxWhite 代删"混为一谈。
 2. 不要给文件拖拽 `SetText`，否则 Electron 拖放区不再把它当文件。
 3. 不要让内部 `DragOver` 或 `Drop` 在任何路径上返回 `Move`。
 4. 不要给文件表面恢复 `ListViewBase.CanDragItems`/`DragItemsStarting`：那条路径不写 `AllowedOperations`，会重新引入"允许集=偏好"耦合与 Win10 操作菜单。文件拖拽一律容器级 `CanDrag`（`StartDragAsync`）。
@@ -301,13 +301,13 @@ WinUI 的拖拽完成时刻可能晚于物理鼠标松开。2026-09-04 的两次
 7. 不要在 `DragOver` 就设置“内部已处理”；只有 `Drop` 或受边界保护的释放恢复真正提交后才能设置。
 8. 不要把 `_activeDragHandledAsStackMembership` 当成仅表示叠放加入；它当前保护所有内部编排免受源端清理。
 9. 不要在内部加入/移出/排序时调用文件移动 API。
-10. 不要在真实跨格移动完成前返回 `Move`，也不要在 DeskBox 已完成移动后再让 Shell 二次清理。
+10. 不要在真实跨格移动完成前返回 `Move`，也不要在 DeskBoxWhite 已完成移动后再让 Shell 二次清理。
 11. 不要对 `.lnk` 在 UI 线程同步调用 Storage broker；优先原生 Shell 载荷。
 12. 不要用弹窗成员列表的坐标配合主窗口句柄判断鼠标位置。
 13. 不要让根表面插入线覆盖文件夹或叠放子目标；子目标存在时必须禁止根排序恢复。
 14. 不要用叠放投影集合判断格子空状态。
 15. 不要只测试一种叠放打开模式，或只在 Win11 上验证 Win10 行为。
-16. 不要以管理员身份启动 DeskBox 做拖放验证；不同完整性级别会让 Windows 拦截拖放，形成错误结论。
+16. 不要以管理员身份启动 DeskBoxWhite 做拖放验证；不同完整性级别会让 Windows 拦截拖放，形成错误结论。
 17. 不要为了允许父子映射而修改或绕过 `EnsureSafeDirectoryTransfers`；只放宽格子映射关系校验。
 18. 不要让托管目录复制递归进入 junction、符号链接或已经访问过的物理目录。
 19. 不要把“两个格子 ID 不同”等同于一定需要文件传输；源项目已经位于有效目标目录时必须无操作。
@@ -318,7 +318,7 @@ WinUI 的拖拽完成时刻可能晚于物理鼠标松开。2026-09-04 的两次
 诊断时先按会话关联日志：
 
 ```powershell
-rg -n "\[DragProtocol\]|\[FileStack\]|External drag-out reconciled|\[FileTransfer\]" DeskBox.log
+rg -n "\[DragProtocol\]|\[FileStack\]|External drag-out reconciled|\[FileTransfer\]" DeskBoxWhite.log
 ```
 
 关键阶段：
@@ -352,7 +352,7 @@ rg -n "\[DragProtocol\]|\[FileStack\]|External drag-out reconciled|\[FileTransfe
 - `FileSurfaceContent.xaml` / `.xaml.cs`
 - `FileSurfaceContent.ItemVisuals.cs`
 - `FileSurfaceContent.StackPopover.cs`
-- `DeskBoxDragData.cs`
+- `DeskBoxWhiteDragData.cs`
 - `DesktopAutoOrganizationSuppressionRegistry.cs`
 - `WidgetViewModel.Stacks.cs`
 - `WidgetShell.xaml.cs`
@@ -361,7 +361,7 @@ rg -n "\[DragProtocol\]|\[FileStack\]|External drag-out reconciled|\[FileTransfe
 ### 11.1 自动化验证
 
 ```powershell
-dotnet test .\tests\DeskBox.Tests\DeskBox.Tests.csproj `
+dotnet test .\tests\DeskBoxWhite.Tests\DeskBoxWhite.Tests.csproj `
   --no-restore --verbosity:minimal -p:Platform=x64
 ```
 
@@ -412,7 +412,7 @@ dotnet test .\tests\DeskBox.Tests\DeskBox.Tests.csproj `
 | 责任 | 主要位置 |
 | --- | --- |
 | 源载荷与 `.lnk` Shell 旁路 | `Controls/FileItemDragPackage.cs`、`Controls/NativeShellFileDragProvider.cs` |
-| 协议字段与外部载荷读取 | `Services/DeskBoxDragData.cs` |
+| 协议字段与外部载荷读取 | `Services/DeskBoxWhiteDragData.cs` |
 | 主表面路由、缓存、完成策略、外部协调、空状态 | `Controls/WidgetContents/FileSurfaceContent.xaml.cs` |
 | 叠放卡片目标与加入叠放 | `Controls/WidgetContents/FileSurfaceContent.ItemVisuals.cs` |
 | 弹窗成员排序与释放恢复 | `Controls/WidgetContents/FileSurfaceContent.StackPopover.cs` |
